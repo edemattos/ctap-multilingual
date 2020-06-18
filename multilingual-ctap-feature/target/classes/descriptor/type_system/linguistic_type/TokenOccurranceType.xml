@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>Token Occurrance Linguistic Type</name>
+    <description>This is the linguistic type of Token Occurrances, which is used to represent the number of word tokens occurring with the same frequency in a document.
+It extends the AnnotationBase Type and has a feature of nOccurranceDouble and nTokensDouble.
+It does not extend the Annotation type, so it has no begin or end features.
+
+
+Dependency:
+	Linguistic_type: Token</description>
+    <version>1.0</version>
+    <vendor>zweiss</vendor>
+  <imports>
+    <import location="TokenType.xml"/>
+  </imports>
+  <types>
+    <typeDescription>
+      <name>com.ctapweb.feature.type.TokenType</name>
+      <description>The token type.</description>
+      <supertypeName>uima.cas.AnnotationBase</supertypeName>
+    <features>
+        <featureDescription>
+          <name>wordString</name>
+          <description>The spelling of the word type.</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>

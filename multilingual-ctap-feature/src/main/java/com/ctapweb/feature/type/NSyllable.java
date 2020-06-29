@@ -3,6 +3,8 @@
 /* First created by JCasGen Tue Aug 16 14:46:06 CEST 2016 */
 package com.ctapweb.feature.type;
 
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
@@ -10,10 +12,16 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** number of syllables in the document
- * Updated by JCasGen Tue Aug 16 14:47:06 CEST 2016
- * XML source: /home/xiaobin/sync/projects/eclipse/FeatureUIMA/src/main/descriptor/type_system/feature_type/NSyllable.xml
+ * Updated by JCasGen Mon Jun 29 11:21:28 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/feature_type/MeanTokenLengthType.xml
  * @generated */
 public class NSyllable extends ComplexityFeatureBase {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.NSyllable";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +38,18 @@ public class NSyllable extends ComplexityFeatureBase {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
   /** Never called.  Disable default constructor
    * @generated */
   protected NSyllable() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public NSyllable(int addr, TOP_Type type) {
-    super(addr, type);
+  public NSyllable(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +60,7 @@ public class NSyllable extends ComplexityFeatureBase {
     super(jcas);
     readObject();   
   } 
+
 
   /** 
    * <!-- begin-user-doc -->

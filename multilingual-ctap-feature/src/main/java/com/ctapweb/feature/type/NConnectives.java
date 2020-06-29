@@ -3,6 +3,12 @@
 /* First created by JCasGen Fri Feb 01 16:11:03 CET 2019 */
 package com.ctapweb.feature.type;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
+
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
+import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
@@ -10,10 +16,16 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Feb 05 10:21:08 CET 2019
- * XML source: /Users/zweiss/Documents/Forschung/Projekte/CTAP/git/ctap/ctap-feature/src/main/resources/descriptor/type_system/feature_type/CohesiveComplexityType.xml
+ * Updated by JCasGen Mon Jun 29 11:19:47 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/feature_type/CohesiveComplexityType.xml
  * @generated */
 public class NConnectives extends ComplexityFeatureBase {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.NConnectives";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +42,33 @@ public class NConnectives extends ComplexityFeatureBase {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
+  /* *******************
+   *   Feature Offsets *
+   * *******************/ 
+   
+  public final static String _FeatName_connectiveType = "connectiveType";
+  public final static String _FeatName_Scope = "Scope";
+
+
+  /* Feature Adjusted Offsets */
+  private final static CallSite _FC_connectiveType = TypeSystemImpl.createCallSite(NConnectives.class, "connectiveType");
+  private final static MethodHandle _FH_connectiveType = _FC_connectiveType.dynamicInvoker();
+  private final static CallSite _FC_Scope = TypeSystemImpl.createCallSite(NConnectives.class, "Scope");
+  private final static MethodHandle _FH_Scope = _FC_Scope.dynamicInvoker();
+
+   
   /** Never called.  Disable default constructor
    * @generated */
   protected NConnectives() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public NConnectives(int addr, TOP_Type type) {
-    super(addr, type);
+  public NConnectives(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +79,7 @@ public class NConnectives extends ComplexityFeatureBase {
     super(jcas);
     readObject();   
   } 
+
 
   /** 
    * <!-- begin-user-doc -->
@@ -68,19 +97,18 @@ public class NConnectives extends ComplexityFeatureBase {
    * @generated
    * @return value of the feature 
    */
-  public String getConnectiveType() {
-    if (NConnectives_Type.featOkTst && ((NConnectives_Type)jcasType).casFeat_connectiveType == null)
-      jcasType.jcas.throwFeatMissing("connectiveType", "com.ctapweb.feature.type.NConnectives");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((NConnectives_Type)jcasType).casFeatCode_connectiveType);}
+  public String getConnectiveType() { 
+    return _getStringValueNc(wrapGetIntCatchException(_FH_connectiveType));
+  }
     
   /** setter for connectiveType - sets Combination of semantic and origin, e.g., Breindl_Temp 
    * @generated
    * @param v value to set into the feature 
    */
   public void setConnectiveType(String v) {
-    if (NConnectives_Type.featOkTst && ((NConnectives_Type)jcasType).casFeat_connectiveType == null)
-      jcasType.jcas.throwFeatMissing("connectiveType", "com.ctapweb.feature.type.NConnectives");
-    jcasType.ll_cas.ll_setStringValue(addr, ((NConnectives_Type)jcasType).casFeatCode_connectiveType, v);}    
+    _setStringValueNfc(wrapGetIntCatchException(_FH_connectiveType), v);
+  }    
+    
    
     
   //*--------------*
@@ -93,10 +121,9 @@ public class NConnectives extends ComplexityFeatureBase {
    * @generated
    * @return value of the feature 
    */
-  public String getScope() {
-    if (NConnectives_Type.featOkTst && ((NConnectives_Type)jcasType).casFeat_Scope == null)
-      jcasType.jcas.throwFeatMissing("Scope", "com.ctapweb.feature.type.NConnectives");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((NConnectives_Type)jcasType).casFeatCode_Scope);}
+  public String getScope() { 
+    return _getStringValueNc(wrapGetIntCatchException(_FH_Scope));
+  }
     
   /** setter for Scope - sets Can be one of the following:
                     ALL count single and multi word connectives
@@ -106,9 +133,9 @@ public class NConnectives extends ComplexityFeatureBase {
    * @param v value to set into the feature 
    */
   public void setScope(String v) {
-    if (NConnectives_Type.featOkTst && ((NConnectives_Type)jcasType).casFeat_Scope == null)
-      jcasType.jcas.throwFeatMissing("Scope", "com.ctapweb.feature.type.NConnectives");
-    jcasType.ll_cas.ll_setStringValue(addr, ((NConnectives_Type)jcasType).casFeatCode_Scope, v);}    
+    _setStringValueNfc(wrapGetIntCatchException(_FH_Scope), v);
+  }    
+    
   }
 
     

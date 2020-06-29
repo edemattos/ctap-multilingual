@@ -3,6 +3,8 @@
 /* First created by JCasGen Tue Feb 05 10:21:08 CET 2019 */
 package com.ctapweb.feature.type;
 
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
@@ -10,10 +12,16 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Feb 05 10:21:08 CET 2019
- * XML source: /Users/zweiss/Documents/Forschung/Projekte/CTAP/git/ctap/ctap-feature/src/main/resources/descriptor/type_system/feature_type/CohesiveComplexityType.xml
+ * Updated by JCasGen Mon Jun 29 11:19:47 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/feature_type/CohesiveComplexityType.xml
  * @generated */
 public class CohesiveComplexity extends ComplexityFeatureBase {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.CohesiveComplexity";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +38,18 @@ public class CohesiveComplexity extends ComplexityFeatureBase {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
   /** Never called.  Disable default constructor
    * @generated */
   protected CohesiveComplexity() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public CohesiveComplexity(int addr, TOP_Type type) {
-    super(addr, type);
+  public CohesiveComplexity(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +60,7 @@ public class CohesiveComplexity extends ComplexityFeatureBase {
     super(jcas);
     readObject();   
   } 
+
 
   /** 
    * <!-- begin-user-doc -->

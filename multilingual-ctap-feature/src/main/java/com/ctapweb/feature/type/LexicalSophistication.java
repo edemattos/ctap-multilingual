@@ -3,6 +3,8 @@
 /* First created by JCasGen Fri Dec 23 17:28:33 CET 2016 */
 package com.ctapweb.feature.type;
 
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
@@ -10,10 +12,16 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Jan 03 18:24:35 CET 2017
- * XML source: /home/xiaobin/work/project/CTAP/ctap-feature/src/main/resources/descriptor/TAE/LexicalSophisticationTAE.xml
+ * Updated by JCasGen Mon Jun 29 11:20:35 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/feature_type/LexicalSophisticationType.xml
  * @generated */
 public class LexicalSophistication extends ComplexityFeatureBase {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.LexicalSophistication";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +38,18 @@ public class LexicalSophistication extends ComplexityFeatureBase {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
   /** Never called.  Disable default constructor
    * @generated */
   protected LexicalSophistication() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public LexicalSophistication(int addr, TOP_Type type) {
-    super(addr, type);
+  public LexicalSophistication(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +60,7 @@ public class LexicalSophistication extends ComplexityFeatureBase {
     super(jcas);
     readObject();   
   } 
+
 
   /** 
    * <!-- begin-user-doc -->

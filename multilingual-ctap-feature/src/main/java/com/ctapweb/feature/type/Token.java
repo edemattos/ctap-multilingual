@@ -3,6 +3,8 @@
 /* First created by JCasGen Tue Aug 16 14:30:36 CEST 2016 */
 package com.ctapweb.feature.type;
 
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
@@ -10,10 +12,16 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** The token type.
- * Updated by JCasGen Tue Feb 05 10:21:08 CET 2019
- * XML source: /Users/zweiss/Documents/Forschung/Projekte/CTAP/git/ctap/ctap-feature/src/main/resources/descriptor/type_system/feature_type/CohesiveComplexityType.xml
+ * Updated by JCasGen Mon Jun 29 11:24:30 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/feature_type/Word2OrMoreSyllablesType.xml
  * @generated */
 public class Token extends Annotation {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.Token";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +38,18 @@ public class Token extends Annotation {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
   /** Never called.  Disable default constructor
    * @generated */
   protected Token() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public Token(int addr, TOP_Type type) {
-    super(addr, type);
+  public Token(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +60,7 @@ public class Token extends Annotation {
     super(jcas);
     readObject();   
   } 
+
 
   /** @generated
    * @param jcas JCas to which this Feature Structure belongs

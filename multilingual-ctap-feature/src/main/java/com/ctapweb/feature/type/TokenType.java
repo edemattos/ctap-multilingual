@@ -3,6 +3,12 @@
 /* First created by JCasGen Tue Aug 16 14:30:54 CEST 2016 */
 package com.ctapweb.feature.type;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
+
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
+import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.AnnotationBase;
@@ -10,10 +16,16 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** The token type.
- * Updated by JCasGen Thu Dec 22 09:07:13 CET 2016
- * XML source: /home/xiaobin/work/project/CTAP/ctap-feature/src/main/resources/descriptor/TAE/TTR_TAExml
+ * Updated by JCasGen Mon Jun 29 11:24:17 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/feature_type/TypeTokenRatioType.xml
  * @generated */
 public class TokenType extends AnnotationBase {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.TokenType";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +42,30 @@ public class TokenType extends AnnotationBase {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
+  /* *******************
+   *   Feature Offsets *
+   * *******************/ 
+   
+  public final static String _FeatName_wordString = "wordString";
+
+
+  /* Feature Adjusted Offsets */
+  private final static CallSite _FC_wordString = TypeSystemImpl.createCallSite(TokenType.class, "wordString");
+  private final static MethodHandle _FH_wordString = _FC_wordString.dynamicInvoker();
+
+   
   /** Never called.  Disable default constructor
    * @generated */
   protected TokenType() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public TokenType(int addr, TOP_Type type) {
-    super(addr, type);
+  public TokenType(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +76,7 @@ public class TokenType extends AnnotationBase {
     super(jcas);
     readObject();   
   } 
+
 
   /** 
    * <!-- begin-user-doc -->
@@ -70,19 +96,18 @@ public class TokenType extends AnnotationBase {
    * @generated
    * @return value of the feature 
    */
-  public String getWordString() {
-    if (TokenType_Type.featOkTst && ((TokenType_Type)jcasType).casFeat_wordString == null)
-      jcasType.jcas.throwFeatMissing("wordString", "com.ctapweb.feature.type.TokenType");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((TokenType_Type)jcasType).casFeatCode_wordString);}
+  public String getWordString() { 
+    return _getStringValueNc(wrapGetIntCatchException(_FH_wordString));
+  }
     
   /** setter for wordString - sets The spelling of the word type. 
    * @generated
    * @param v value to set into the feature 
    */
   public void setWordString(String v) {
-    if (TokenType_Type.featOkTst && ((TokenType_Type)jcasType).casFeat_wordString == null)
-      jcasType.jcas.throwFeatMissing("wordString", "com.ctapweb.feature.type.TokenType");
-    jcasType.ll_cas.ll_setStringValue(addr, ((TokenType_Type)jcasType).casFeatCode_wordString, v);}    
+    _setStringValueNfc(wrapGetIntCatchException(_FH_wordString), v);
+  }    
+    
   }
 
     

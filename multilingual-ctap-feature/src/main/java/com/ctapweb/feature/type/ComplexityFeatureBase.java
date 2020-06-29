@@ -3,6 +3,12 @@
 /* First created by JCasGen Tue Aug 16 14:32:11 CEST 2016 */
 package com.ctapweb.feature.type;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
+
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
+import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.AnnotationBase;
@@ -10,10 +16,16 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** All complexity features extend this base type.
- * Updated by JCasGen Tue Feb 05 10:21:08 CET 2019
- * XML source: /Users/zweiss/Documents/Forschung/Projekte/CTAP/git/ctap/ctap-feature/src/main/resources/descriptor/type_system/feature_type/CohesiveComplexityType.xml
+ * Updated by JCasGen Mon Jun 29 11:24:30 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/feature_type/Word2OrMoreSyllablesType.xml
  * @generated */
 public class ComplexityFeatureBase extends AnnotationBase {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.ComplexityFeatureBase";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +42,33 @@ public class ComplexityFeatureBase extends AnnotationBase {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
+  /* *******************
+   *   Feature Offsets *
+   * *******************/ 
+   
+  public final static String _FeatName_id = "id";
+  public final static String _FeatName_value = "value";
+
+
+  /* Feature Adjusted Offsets */
+  private final static CallSite _FC_id = TypeSystemImpl.createCallSite(ComplexityFeatureBase.class, "id");
+  private final static MethodHandle _FH_id = _FC_id.dynamicInvoker();
+  private final static CallSite _FC_value = TypeSystemImpl.createCallSite(ComplexityFeatureBase.class, "value");
+  private final static MethodHandle _FH_value = _FC_value.dynamicInvoker();
+
+   
   /** Never called.  Disable default constructor
    * @generated */
   protected ComplexityFeatureBase() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public ComplexityFeatureBase(int addr, TOP_Type type) {
-    super(addr, type);
+  public ComplexityFeatureBase(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +79,7 @@ public class ComplexityFeatureBase extends AnnotationBase {
     super(jcas);
     readObject();   
   } 
+
 
   /** 
    * <!-- begin-user-doc -->
@@ -70,19 +99,18 @@ public class ComplexityFeatureBase extends AnnotationBase {
    * @generated
    * @return value of the feature 
    */
-  public int getId() {
-    if (ComplexityFeatureBase_Type.featOkTst && ((ComplexityFeatureBase_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "com.ctapweb.feature.type.ComplexityFeatureBase");
-    return jcasType.ll_cas.ll_getIntValue(addr, ((ComplexityFeatureBase_Type)jcasType).casFeatCode_id);}
+  public int getId() { 
+    return _getIntValueNc(wrapGetIntCatchException(_FH_id));
+  }
     
   /** setter for id - sets the ID of the current analysis engine 
    * @generated
    * @param v value to set into the feature 
    */
   public void setId(int v) {
-    if (ComplexityFeatureBase_Type.featOkTst && ((ComplexityFeatureBase_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "com.ctapweb.feature.type.ComplexityFeatureBase");
-    jcasType.ll_cas.ll_setIntValue(addr, ((ComplexityFeatureBase_Type)jcasType).casFeatCode_id, v);}    
+    _setIntValueNfc(wrapGetIntCatchException(_FH_id), v);
+  }    
+    
    
     
   //*--------------*
@@ -92,19 +120,18 @@ public class ComplexityFeatureBase extends AnnotationBase {
    * @generated
    * @return value of the feature 
    */
-  public double getValue() {
-    if (ComplexityFeatureBase_Type.featOkTst && ((ComplexityFeatureBase_Type)jcasType).casFeat_value == null)
-      jcasType.jcas.throwFeatMissing("value", "com.ctapweb.feature.type.ComplexityFeatureBase");
-    return jcasType.ll_cas.ll_getDoubleValue(addr, ((ComplexityFeatureBase_Type)jcasType).casFeatCode_value);}
+  public double getValue() { 
+    return _getDoubleValueNc(wrapGetIntCatchException(_FH_value));
+  }
     
   /** setter for value - sets The value of the feature. 
    * @generated
    * @param v value to set into the feature 
    */
   public void setValue(double v) {
-    if (ComplexityFeatureBase_Type.featOkTst && ((ComplexityFeatureBase_Type)jcasType).casFeat_value == null)
-      jcasType.jcas.throwFeatMissing("value", "com.ctapweb.feature.type.ComplexityFeatureBase");
-    jcasType.ll_cas.ll_setDoubleValue(addr, ((ComplexityFeatureBase_Type)jcasType).casFeatCode_value, v);}    
+    _setDoubleValueNfc(wrapGetIntCatchException(_FH_value), v);
+  }    
+    
   }
 
     

@@ -3,6 +3,12 @@
 /* First created by JCasGen Mon Jan 28 13:23:07 CET 2019 */
 package com.ctapweb.feature.type;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
+
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
+import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
@@ -10,10 +16,16 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** the morphological tag of a token
- * Updated by JCasGen Mon Jan 28 13:49:27 CET 2019
- * XML source: /Users/zweiss/Documents/Forschung/Projekte/CTAP/git/ctap/ctap-feature/src/main/resources/descriptor/type_system/linguistic_type/MorphologicalTagType.xml
+ * Updated by JCasGen Mon Jun 29 11:17:38 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/linguistic_type/MorphologicalTagType.xml
  * @generated */
 public class MorphologicalTag extends Annotation {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.MorphologicalTag";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +42,30 @@ public class MorphologicalTag extends Annotation {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
+  /* *******************
+   *   Feature Offsets *
+   * *******************/ 
+   
+  public final static String _FeatName_morphologicalTag = "morphologicalTag";
+
+
+  /* Feature Adjusted Offsets */
+  private final static CallSite _FC_morphologicalTag = TypeSystemImpl.createCallSite(MorphologicalTag.class, "morphologicalTag");
+  private final static MethodHandle _FH_morphologicalTag = _FC_morphologicalTag.dynamicInvoker();
+
+   
   /** Never called.  Disable default constructor
    * @generated */
   protected MorphologicalTag() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public MorphologicalTag(int addr, TOP_Type type) {
-    super(addr, type);
+  public MorphologicalTag(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +76,7 @@ public class MorphologicalTag extends Annotation {
     super(jcas);
     readObject();   
   } 
+
 
   /** @generated
    * @param jcas JCas to which this Feature Structure belongs
@@ -82,19 +108,18 @@ public class MorphologicalTag extends Annotation {
    * @generated
    * @return value of the feature 
    */
-  public String getMorphologicalTag() {
-    if (MorphologicalTag_Type.featOkTst && ((MorphologicalTag_Type)jcasType).casFeat_morphologicalTag == null)
-      jcasType.jcas.throwFeatMissing("morphologicalTag", "com.ctapweb.feature.type.MorphologicalTag");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((MorphologicalTag_Type)jcasType).casFeatCode_morphologicalTag);}
+  public String getMorphologicalTag() { 
+    return _getStringValueNc(wrapGetIntCatchException(_FH_morphologicalTag));
+  }
     
   /** setter for morphologicalTag - sets the morphological tag as a String 
    * @generated
    * @param v value to set into the feature 
    */
   public void setMorphologicalTag(String v) {
-    if (MorphologicalTag_Type.featOkTst && ((MorphologicalTag_Type)jcasType).casFeat_morphologicalTag == null)
-      jcasType.jcas.throwFeatMissing("morphologicalTag", "com.ctapweb.feature.type.MorphologicalTag");
-    jcasType.ll_cas.ll_setStringValue(addr, ((MorphologicalTag_Type)jcasType).casFeatCode_morphologicalTag, v);}    
+    _setStringValueNfc(wrapGetIntCatchException(_FH_morphologicalTag), v);
+  }    
+    
   }
 
     

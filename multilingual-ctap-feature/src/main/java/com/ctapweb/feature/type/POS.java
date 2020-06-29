@@ -3,6 +3,12 @@
 /* First created by JCasGen Fri Nov 25 17:05:10 CET 2016 */
 package com.ctapweb.feature.type;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
+
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
+import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
@@ -10,10 +16,16 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** The pos type.
- * Updated by JCasGen Tue Jan 29 17:06:58 CET 2019
- * XML source: /Users/zweiss/Documents/Forschung/Projekte/CTAP/git/ctap/ctap-feature/src/main/resources/descriptor/type_system/linguistic_type/POSType.xml
+ * Updated by JCasGen Mon Jun 29 11:22:53 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-feature/src/main/resources/descriptor/type_system/feature_type/POSDensityType.xml
  * @generated */
 public class POS extends Annotation {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.feature.type.POS";
+  
 	/** @generated
 	 * @ordered 
 	 */
@@ -30,17 +42,30 @@ public class POS extends Annotation {
 	@Override
 	public              int getTypeIndexID() {return typeIndexID;}
  
+ 
+  /* *******************
+   *   Feature Offsets *
+   * *******************/ 
+   
+  public final static String _FeatName_tag = "tag";
+
+
+  /* Feature Adjusted Offsets */
+  private final static CallSite _FC_tag = TypeSystemImpl.createCallSite(POS.class, "tag");
+  private final static MethodHandle _FH_tag = _FC_tag.dynamicInvoker();
+
+   
 	/** Never called.  Disable default constructor
 	 * @generated */
 	protected POS() {/* intentionally empty block */}
     
-	/** Internal - constructor used by generator 
-	 * @generated
-	 * @param addr low level Feature Structure reference
-	 * @param type the type of this Feature Structure 
-	 */
-	public POS(int addr, TOP_Type type) {
-    super(addr, type);
+  /** Internal - constructor used by generator 
+   * @generated
+   * @param casImpl the CAS this Feature Structure belongs to
+   * @param type the type of this Feature Structure 
+   */
+  public POS(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +76,7 @@ public class POS extends Annotation {
     super(jcas);
     readObject();   
   } 
+
 
 	/** @generated
 	 * @param jcas JCas to which this Feature Structure belongs
@@ -80,18 +106,17 @@ public class POS extends Annotation {
    * @generated
    * @return value of the feature 
    */
-	public String getTag() {
-    if (POS_Type.featOkTst && ((POS_Type)jcasType).casFeat_tag == null)
-      jcasType.jcas.throwFeatMissing("tag", "com.ctapweb.feature.type.POS");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((POS_Type)jcasType).casFeatCode_tag);}
+	public String getTag() { 
+    return _getStringValueNc(wrapGetIntCatchException(_FH_tag));
+  }
     
   /** setter for tag - sets the pos tag 
    * @generated
    * @param v value to set into the feature 
    */
 	public void setTag(String v) {
-    if (POS_Type.featOkTst && ((POS_Type)jcasType).casFeat_tag == null)
-      jcasType.jcas.throwFeatMissing("tag", "com.ctapweb.feature.type.POS");
-    jcasType.ll_cas.ll_setStringValue(addr, ((POS_Type)jcasType).casFeatCode_tag, v);}    
+    _setStringValueNfc(wrapGetIntCatchException(_FH_tag), v);
+  }    
+    
   }
 

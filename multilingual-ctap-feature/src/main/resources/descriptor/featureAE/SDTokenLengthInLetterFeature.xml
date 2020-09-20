@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<analysisEngineDescription
-	xmlns="http://uima.apache.org/resourceSpecifier">
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
 	<frameworkImplementation>org.apache.uima.java</frameworkImplementation>
 	<primitive>true</primitive>
-	<annotatorImplementationName>com.ctapweb.feature.featureAE.SDTokenLengthAE
-	</annotatorImplementationName>
+	<annotatorImplementationName>com.ctapweb.feature.featureAE.SDTokenLengthAE</annotatorImplementationName>
 	<analysisEngineMetaData>
 		<name>SD Token Length in Letters</name>
-		<description>Calculates the standard deviation of token length in
-			number of letters.
+		<description>
+			Calculates the standard deviation of token length in number of letters.
 
 			AAE Dependency:
 			SentenceAnnotator.xml
 			TokenAnnotator.xml
+			SurfaceFormAnnotator.xml
 			SyllableAnnotator.xml
 			LetterAnnotator.xml
 		</description>
@@ -52,8 +51,7 @@
 		</configurationParameterSettings>
 		<typeSystemDescription>
 			<imports>
-				<import
-					location="../type_system/feature_type/SDTokenLengthType.xml" />
+				<import location="../type_system/feature_type/SDTokenLengthType.xml" />
 			</imports>
 		</typeSystemDescription>
 		<typePriorities />
@@ -61,21 +59,19 @@
 		<capabilities>
 			<capability>
 				<inputs>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Token
-					</type>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Syllable
-					</type>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Letter
-					</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Token</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.SurfaceForm</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Syllable</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Letter</type>
 				</inputs>
 				<outputs>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.SDTokenLength
-					</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.SDTokenLength</type>
 				</outputs>
 				<languagesSupported>
 					<language>EN</language>
 					<language>DE</language>
                     <language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

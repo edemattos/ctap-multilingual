@@ -22,6 +22,7 @@
 			PTKZU PTKNEG PTKVZ PTKANT PTKA VAFIN
 			VAIMP VAINF VAIZU VAPP TRUNC
 			for Dutch: the CGN tags Prep, Art, Conj, Pron
+			for Portuguese: the Universal Dependencies tag AUX ADP DET SCONJ CCONJ PART PRON
 
 			Formula:
 			functionalWordDensity = numFunctionalWords / numTokens
@@ -100,6 +101,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
@@ -116,6 +126,12 @@
 			</nameValuePair>
 			<nameValuePair>
 				<name>POSTypeNL</name>
+				<value>
+					<string>functional</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
 				<value>
 					<string>functional</string>
 				</value>
@@ -142,6 +158,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

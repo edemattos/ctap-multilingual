@@ -22,8 +22,14 @@ import com.ctapweb.feature.type.DLTIntegrationCost;
 import com.ctapweb.feature.type.DependencyParse;
 import com.ctapweb.feature.util.DependencyLabelCategories;
 import com.ctapweb.feature.util.DependencyTree;
+import com.ctapweb.feature.util.EnglishDependencyLabels;
+import com.ctapweb.feature.util.EnglishWordCategories;
 import com.ctapweb.feature.util.GermanDependencyLabels;
 import com.ctapweb.feature.util.GermanWordCategories;
+import com.ctapweb.feature.util.MorphologicalCategories;
+import com.ctapweb.feature.util.PortugueseDependencyLabels;
+import com.ctapweb.feature.util.UDMorphologicalCategories;
+import com.ctapweb.feature.util.PortugueseWordCategories;
 import com.ctapweb.feature.util.WordCategories;
 
 /**
@@ -45,6 +51,7 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 	private String featureType;
 	private WordCategories posMapping;
 	private DependencyLabelCategories labelMapping;
+	private MorphologicalCategories morphLabelMapping;
 
 	private static final Logger logger = LogManager.getLogger();
 
@@ -68,28 +75,36 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 		// obtain mandatory language parameter and access language dependent resources
 		String lCode = "";
 		if(aContext.getConfigParameterValue(PARAM_LANGUAGE_CODE) == null) {
-			ResourceInitializationException e = new ResourceInitializationException("mandatory_value_missing", 
+			ResourceInitializationException e = new ResourceInitializationException("mandatory_value_missing",
 					new Object[] {PARAM_LANGUAGE_CODE});
 			logger.throwing(e);
 			throw e;
 		} else {
 			lCode = ((String) aContext.getConfigParameterValue(PARAM_LANGUAGE_CODE)).toUpperCase();
 			switch (lCode) {
-			case "DE":
-				posMapping = new GermanWordCategories();
-				labelMapping = new GermanDependencyLabels();
-				break;
-			case "EN":
-			default:  // See if this is a reasonable default
-				posMapping = new GermanWordCategories();
-				labelMapping = new GermanDependencyLabels();
-				break;
+				case "DE":
+					posMapping = new GermanWordCategories();
+					labelMapping = new GermanDependencyLabels();
+					break;
+				case "PT":
+					posMapping = new PortugueseWordCategories();
+					labelMapping = new PortugueseDependencyLabels();
+					morphLabelMapping = new UDMorphologicalCategories();
+					break;
+				case "EN":
+					posMapping = new EnglishWordCategories();
+					labelMapping = new EnglishDependencyLabels();
+					break;
+				default:  // See if this is a reasonable default
+					posMapping = new GermanWordCategories();
+					labelMapping = new GermanDependencyLabels();
+					break;
 			}
 		}
 
 		// get the parameter value of analysis id
 		if(aContext.getConfigParameterValue(PARAM_AEID) == null) {
-			ResourceInitializationException e = new ResourceInitializationException("mandatory_value_missing", 
+			ResourceInitializationException e = new ResourceInitializationException("mandatory_value_missing",
 					new Object[] {PARAM_AEID});
 			logger.throwing(e);
 			throw e;
@@ -97,9 +112,9 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 			aeID = (Integer) aContext.getConfigParameterValue(PARAM_AEID);
 		}
 
-		// get DLT configuration 
+		// get DLT configuration
 		if(aContext.getConfigParameterValue(PARAM_DLT_COST_CALC_CONFIG) == null) {
-			ResourceInitializationException e = new ResourceInitializationException("mandatory_value_missing", 
+			ResourceInitializationException e = new ResourceInitializationException("mandatory_value_missing",
 					new Object[] {PARAM_DLT_COST_CALC_CONFIG});
 			logger.throwing(e);
 			throw e;
@@ -107,9 +122,9 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 			dltCostCalculationConfig = (String) aContext.getConfigParameterValue(PARAM_DLT_COST_CALC_CONFIG);
 		}
 
-		// get DLT feature type 
+		// get DLT feature type
 		if(aContext.getConfigParameterValue(DLT_FEATURE_TYPE) == null) {
-			ResourceInitializationException e = new ResourceInitializationException("mandatory_value_missing", 
+			ResourceInitializationException e = new ResourceInitializationException("mandatory_value_missing",
 					new Object[] {DLT_FEATURE_TYPE});
 			logger.throwing(e);
 			throw e;
@@ -126,10 +141,10 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 	 */
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
-		logger.trace(LogMarker.UIMA_MARKER, 
+		logger.trace(LogMarker.UIMA_MARKER,
 				new ProcessingDocumentMessage(aeType, aeName, aJCas.getDocumentText()));
 		int nFiniteVerbs = 0;  // denominator
-		int numerator = 0; 
+		int numerator = 0;
 
 		// get annotation indexes and iterator
 		//iterate through all dependency trees (sentences).
@@ -156,13 +171,15 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 				curPos = depTree.getPOS()[wordID];
 				curLabel = depTree.getLabels()[wordID];
 
+				if (curPos == null) { continue; } // skip multi-word tokens, no POS information (added for current Stanza setup)
+
 				// 1. calculate the discourse integration cost: new discourse referents are nouns
 				if (posMapping.isNoun(curPos)) {
 					foundFiniteVerb = false;
 					if (dltCostCalculationConfig.contains(REDUCED_COORDINATION_WEIGHT_CONFIG)) {
 						wordAtIntexAddsToDIC[wordID] = !labelMapping.isConjunct(curLabel);
 						continue;
-					} 
+					}
 					wordAtIntexAddsToDIC[wordID] = true;
 					continue;
 				}
@@ -175,7 +192,21 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 				}
 
 				// if we are here, we found a verb. Only finite verbs are relevant here, unless this is the extra verb weight configuration
-				if(!posMapping.isFiniteVerb(curPos)) {
+				boolean isFinite = posMapping.supportsFiniteVerbs();
+				if(!posMapping.supportsFiniteVerbs() && posMapping.isVerb(curPos)) {
+					//get morphological tags
+					String feature = depTree.getFeats()[wordID];
+					if (feature != null) {
+						String[] features = feature.split("[|]");
+						for (String f : features) {
+							if (morphLabelMapping.isFiniteVerb(f)) {
+								isFinite = true;
+								break;
+							}
+						}
+					}
+				}
+				if((posMapping.supportsFiniteVerbs() && !posMapping.isFiniteVerb(curPos)) || !isFinite) {
 					foundFiniteVerb = false;
 					wordAtIntexAddsToDIC[wordID] = dltCostCalculationConfig.contains(ENHANCED_VERB_WEIGHT_CONFIG);
 					continue;
@@ -201,6 +232,8 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 						numerator += 1;
 					}
 				}
+
+				foundFiniteVerb = true;
 			}
 			if (featureType.equals("maxIC")) {  // sum up all max ICs
 				numerator += maxIC;
@@ -213,8 +246,8 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 		if(nFiniteVerbs > 0) {
 			icFeature = numerator / nFiniteVerbs;
 		}
-		
-		logger.trace(LogMarker.UIMA_MARKER, "Calculate DLT feature: {} for DLT configuration: {}: {} / {} = {}", dltCostCalculationConfig, featureType, numerator, nFiniteVerbs, icFeature);  
+
+		logger.trace(LogMarker.UIMA_MARKER, "Calculate DLT feature: {} for DLT configuration: {}: {} / {} = {}", dltCostCalculationConfig, featureType, numerator, nFiniteVerbs, icFeature);
 
 		//output the feature type
 		DLTIntegrationCost annotation = new DLTIntegrationCost(aJCas);
@@ -242,7 +275,7 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 		int curIC = 0;
 		int endID = -1;
 		for (int depID : depTree.getDependents(wordID)) {
-			// Step 0: skip dependents that occur to the right of their head, 
+			// Step 0: skip dependents that occur to the right of their head,
 			// i.e. stop iteration as soon as first depID larger than head (assume ordered list of dependents)
 			if (depID > wordID) {
 				break;
@@ -250,9 +283,9 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 
 			// Step 1: determine the end index for structural integration:
 			// note: if we have a relative clause, the finite verb itself contributes to the structural integration cost
-			if (posMapping.isRelativePronoun(depTree.getForms()[depID], depTree.getPOS()[depID]) || 
-					(posMapping.isPreposition(depTree.getPOS()[depID]) && 
-							depID+1<depTree.getPOS().length && 
+			if (posMapping.isRelativePronoun(depTree.getForms()[depID], depTree.getPOS()[depID]) ||
+					(posMapping.isPreposition(depTree.getPOS()[depID]) &&
+							depID+1<depTree.getPOS().length &&
 							posMapping.isRelativePronoun(depTree.getForms()[depID+1], depTree.getPOS()[depID+1]))) {
 				// TODO rewrite this to alternatively use RC deprel label: das Haus, wo wir gewohnt haben
 				endID = wordID+1;
@@ -264,7 +297,7 @@ public class DLTIntegrationCostAE  extends JCasAnnotator_ImplBase {
 			// TODO understand this step again and figure out, why we need to do this
 			for (int id = depID+1; id < endID; id++) {
 				// structurally integrate for "less modifier weight" condition only arguments, not modifiers!
-				if (dltCostCalculationConfig.contains(CANCELLED_MODIFIER_WEIGHT_CONFIG) && 
+				if (dltCostCalculationConfig.contains(CANCELLED_MODIFIER_WEIGHT_CONFIG) &&
 						!labelMapping.isArgument(depTree.getLabels()[depID])) {
 					continue;
 				}

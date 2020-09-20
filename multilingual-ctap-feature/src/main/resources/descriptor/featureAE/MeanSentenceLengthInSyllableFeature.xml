@@ -13,8 +13,8 @@
 			Dependency:
 			SentenceAnnotator.xml
 			NSentenceFeature.xml
-			TokenAnnotator.xml
-			NTokenFeature.xml
+			SurfaceFormAnnotator.xml
+			NSurfaceFormFeature.xml
 			SyllableAnnotator.xml
 			NSyllableFeature.xml
 		</description>
@@ -65,23 +65,19 @@
 		<capabilities>
 			<capability>
 				<inputs>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NToken
-					</type>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NSyllable
-					</type>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NSentence
-					</type>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NLetter
-					</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NSurfaceForm</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NSyllable</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NSentence</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NLetter</type>
 				</inputs>
 				<outputs>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.MeanSentenceLength
-					</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.MeanSentenceLength</type>
 				</outputs>
 				<languagesSupported>
 					<language>EN</language>
 					<language>DE</language>
                     <language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

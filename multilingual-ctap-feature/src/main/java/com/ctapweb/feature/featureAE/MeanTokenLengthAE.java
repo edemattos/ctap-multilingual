@@ -24,6 +24,7 @@ import com.ctapweb.feature.logging.message.ProcessingDocumentMessage;
 import com.ctapweb.feature.type.ComplexityFeatureBase;
 import com.ctapweb.feature.type.MeanTokenLength;
 import com.ctapweb.feature.type.NLetter;
+import com.ctapweb.feature.type.NSurfaceForm;
 import com.ctapweb.feature.type.NSyllable;
 import com.ctapweb.feature.type.NToken;
 
@@ -32,6 +33,8 @@ import com.ctapweb.feature.type.NToken;
  * Calculates the average word length in syllables/letters, depending on the parameter setting.
  * Paramerter: 
  *  - unit: "syllable" or "letter"
+ *
+ * edemattos 30/07/20 - add surface forms for syllables
  */
 public class MeanTokenLengthAE extends JCasAnnotator_ImplBase {
 
@@ -96,31 +99,27 @@ public class MeanTokenLengthAE extends JCasAnnotator_ImplBase {
 		logger.trace(LogMarker.UIMA_MARKER, 
 				new ProcessingDocumentMessage(aeType, aeName, aJCas.getDocumentText()));
 		
-		double nToken = 0; //number of tokens
+		double nToken = 0; //number of tokens or surface forms
 		double entityCount = 0; //number of syllables/letters
-		double meanTokenLength = 0;
 
-		//get number of tokens
-		Iterator it =  aJCas.getAllIndexedFS(NToken.class);
-		if(it.hasNext()) {
-			nToken = ((ComplexityFeatureBase) it.next()).getValue();
+		Iterator it;
+
+		switch (unit) {
+			case "syllable":
+				it = aJCas.getAllIndexedFS(NSurfaceForm.class);
+				nToken = it.hasNext() ? ((ComplexityFeatureBase) it.next()).getValue() : 0;
+				it = aJCas.getAllIndexedFS(NSyllable.class);
+				entityCount = it.hasNext() ? ((ComplexityFeatureBase) it.next()).getValue() : 0;
+				break;
+			case "letter":
+				it = aJCas.getAllIndexedFS(NToken.class);
+				nToken = it.hasNext() ? ((ComplexityFeatureBase) it.next()).getValue() : 0;
+				it = aJCas.getAllIndexedFS(NLetter.class);
+				entityCount = it.hasNext() ? ((ComplexityFeatureBase) it.next()).getValue() : 0;
+				break;
 		}
 
-		//get syllable/letter count
-		if(unit.equals("syllable")) {
-			it = aJCas.getAllIndexedFS(NSyllable.class);
-		} else if(unit.equals("letter")) {
-			it = aJCas.getAllIndexedFS(NLetter.class);
-		}
-		if(it.hasNext()) {
-			entityCount = ((ComplexityFeatureBase)it.next()).getValue();
-		}
-
-		if(nToken != 0) {
-			meanTokenLength = entityCount / nToken;
-		}
-
-		//output the feature type
+		double meanTokenLength = nToken != 0 ? entityCount / nToken : 0;
 		MeanTokenLength annotation = new MeanTokenLength(aJCas);
 
 		annotation.setId(aeID);
@@ -138,5 +137,4 @@ public class MeanTokenLengthAE extends JCasAnnotator_ImplBase {
 
 		logger.trace(LogMarker.UIMA_MARKER, new DestroyAECompleteMessage(aeType, aeName));
 	}
-
 }

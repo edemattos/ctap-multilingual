@@ -920,6 +920,21 @@ public class FeatureSetManager extends Composite {
 					complexityFeature.getSupportedLanguages().contains("nl"));
 		}
 	}
+
+	@UiHandler("selectPortuguese")
+	void onSelectPortugueseClick(ClickEvent e) {
+		for(AnalysisEngine complexityFeature : selectedFeatureCellTable.getVisibleItems()) {
+			selectedFeatureListSelectionModel.setSelected(complexityFeature,
+					complexityFeature.getSupportedLanguages().contains("pt"));
+		}
+	}
+	@UiHandler("selectPortugueseRightPanel")
+	void onSelectPortugueseRightPanelClick(ClickEvent e) {
+		for(AnalysisEngine complexityFeature : availableFeatureCellTable.getVisibleItems()) {
+			availableFeatureSelectionModel.setSelected(complexityFeature,
+					complexityFeature.getSupportedLanguages().contains("pt"));
+		}
+	}
 	// add new language here
 
 	@UiHandler("closeFeedbackPanel")

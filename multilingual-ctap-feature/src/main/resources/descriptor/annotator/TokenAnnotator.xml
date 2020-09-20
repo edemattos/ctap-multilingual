@@ -45,6 +45,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>
@@ -72,6 +73,11 @@
 			<description>A Dutch model for tokenizing texts.</description>
 			<optional>false</optional>
 		</externalResourceDependency>
+<!--		<externalResourceDependency>-->
+<!--			<key>TokenModelPT</key>-->
+<!--			<description>A Portuguese model for tokenizing texts.</description>-->
+<!--			<optional>false</optional>-->
+<!--		</externalResourceDependency>-->
 	</externalResourceDependencies>
 
 	<resourceManagerConfiguration>
@@ -97,6 +103,13 @@
 					<fileUrl>file:model/nl_token.bin</fileUrl>
 				</fileResourceSpecifier>
 			</externalResource>
+<!--			<externalResource>-->
+<!--				<name>ptTokenModel</name>-->
+<!--				<description>Portuguese token model.</description>-->
+<!--				<fileResourceSpecifier>-->
+<!--					<fileUrl>file:model/pt_token.bin</fileUrl>-->
+<!--				</fileResourceSpecifier>-->
+<!--			</externalResource>-->
 		</externalResources>
 
 		<externalResourceBindings>
@@ -112,6 +125,10 @@
 				<key>TokenModelNL</key>
 				<resourceName>nlTokenModel</resourceName>
 			</externalResourceBinding>
+<!--			<externalResourceBinding>-->
+<!--				<key>TokenModelPT</key>-->
+<!--				<resourceName>ptTokenModel</resourceName>-->
+<!--			</externalResourceBinding>-->
 		</externalResourceBindings>
 	</resourceManagerConfiguration>
 </analysisEngineDescription>

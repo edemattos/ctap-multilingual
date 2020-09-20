@@ -44,6 +44,7 @@
 				<languagesSupported>
 					<language>en</language>
 					<language>de</language>
+					<language>pt</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>
@@ -63,6 +64,11 @@
 		<externalResourceDependency>
 			<key>ParserModelDE</key>
 			<description>A parse model to parse German sentences.</description>
+			<optional>false</optional>
+		</externalResourceDependency>
+		<externalResourceDependency>
+			<key>ParserModelPT</key>
+			<description>A parse model to parse Portuguese sentences.</description>
 			<optional>false</optional>
 		</externalResourceDependency>
 	</externalResourceDependencies>
@@ -88,6 +94,13 @@
 					<!--  <fileUrl>file:model/germanPCFG.ser.gz</fileUrl> faster -->
 				</fileResourceSpecifier>
 			</externalResource>
+			<externalResource>
+				<name>ptParseModel</name>
+				<description>Portuguese parse model.</description>
+				<fileResourceSpecifier>
+					<fileUrl>file:model/pt/cintil2020.ser.gz</fileUrl>
+				</fileResourceSpecifier>
+			</externalResource>
 		</externalResources>
 		<externalResourceBindings>
 			<externalResourceBinding>
@@ -97,6 +110,10 @@
 			<externalResourceBinding>
 				<key>ParserModelDE</key>
 				<resourceName>deParseModel</resourceName>
+			</externalResourceBinding>
+			<externalResourceBinding>
+				<key>ParserModelPT</key>
+				<resourceName>ptParseModel</resourceName>
 			</externalResourceBinding>
 		</externalResourceBindings>
 	</resourceManagerConfiguration>

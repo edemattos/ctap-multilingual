@@ -9,6 +9,7 @@
 		<name>POS Density Feature: Auxiliary Verb</name>
 		<description>Calculates Auxiliary Verb density of the text.
 			Auxiliary Verbs include for German: the Tiger tags VAFIN VAIMP VAINF VAPP.
+			for Portuguese: the Universal Dependencies tag AUX
 
 			Formula:
 			auxVerbDensity = numAuxVerb / numTokens
@@ -46,6 +47,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 
 		<configurationParameterSettings>
@@ -53,6 +63,12 @@
 				<name>POSTypeDE</name>
 				<value>
 					<string>VAFIN VAIMP VAINF VAPP</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
+				<value>
+					<string>AUX</string>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -76,6 +92,7 @@
 				</outputs>
 				<languagesSupported>
 					<language>DE</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

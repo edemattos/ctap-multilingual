@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.ctapweb.feature.featureAE;
 
@@ -25,12 +25,15 @@ import com.ctapweb.feature.logging.message.PopulatedFeatureValueMessage;
 import com.ctapweb.feature.logging.message.ProcessingDocumentMessage;
 import com.ctapweb.feature.type.Letter;
 import com.ctapweb.feature.type.SDTokenLength;
+import com.ctapweb.feature.type.SurfaceForm;
 import com.ctapweb.feature.type.Syllable;
 import com.ctapweb.feature.type.Token;
 
 /**
  * @author xiaobin
  * Calculates the sd of token length in syllables/letters, depending on the parameter setting.
+ *
+ * edemattos 30/07/20 - add surface form for syllables
  */
 public class SDTokenLengthAE extends JCasAnnotator_ImplBase {
 
@@ -100,43 +103,68 @@ public class SDTokenLengthAE extends JCasAnnotator_ImplBase {
 		// Get a DescriptiveStatistics instance
 		DescriptiveStatistics stats = new DescriptiveStatistics();
 
-		// get token annotation indexes and iterators
-		Iterator tokenIter = aJCas.getAnnotationIndex(Token.type).iterator();
+        // get token annotation indexes and iterators
+        Iterator tokenIter = null;
+        switch (unit) {
+            case "letter":
+                tokenIter = aJCas.getAnnotationIndex(Token.type).iterator();
+                break;
+            case "syllable":
+                tokenIter = aJCas.getAnnotationIndex(SurfaceForm.type).iterator();
+                break;
+        }
 
-		//iterate over all sentences and count the number of tokens in each sentence.
-		while(tokenIter.hasNext()) {
-			Token token = (Token) tokenIter.next();
-			int tokenBegin = token.getBegin();
-			int tokenEnd = token.getEnd();
-			int unitCount = 0; // for storing the number of entities (letters/syllables)
+        //iterate over all sentences and count the number of tokens in each sentence.
+        while ((tokenIter != null) && tokenIter.hasNext()) {
 
-			//skip punctuations
-			if(token.getCoveredText().matches("\\p{Punct}")) {
-				continue;
-			}
+            String tokenText = "";
+            int tokenBegin = 0;
+            int tokenEnd = 0;
 
-			//get unit annotations
-			Iterator unitIter = null;
-			switch(unit) {
-			case "syllable":
-				unitIter = aJCas.getAnnotationIndex(Syllable.type).iterator();
-				break;
-			case "letter":
-				unitIter = aJCas.getAnnotationIndex(Letter.type).iterator();
-				break;
-			}
-			
-			// iterate over all units 
-			while(unitIter.hasNext()) {
-				Annotation anno = (Annotation) unitIter.next();
-				String annoStr = anno.getCoveredText();
-				int unitBegin = anno.getBegin();
+            switch (unit) {
+                case "letter":
+                    Token token = (Token) tokenIter.next();
+                    tokenText = token.getCoveredText();
+                    tokenBegin = token.getBegin();
+                    tokenEnd = token.getEnd();
+                    break;
+                case "syllable":
+                    SurfaceForm surf = (SurfaceForm) tokenIter.next();
+                    tokenText = surf.getSurfaceForm();
+                    tokenBegin = surf.getBegin();
+                    tokenEnd = surf.getEnd();
+                    break;
+        }
 
-				//count the number of syllable/letters in the token
-				if(unitBegin >= tokenBegin && unitBegin < tokenEnd ) {
-					unitCount++;
-				}
-			}	
+            //skip punctuations
+            if (tokenText.matches("\\p{Punct}")) {
+                continue;
+            }
+
+            //get unit annotations
+            Iterator unitIter = null;
+            switch (unit) {
+                case "syllable":
+                    unitIter = aJCas.getAnnotationIndex(Syllable.type).iterator();
+                    break;
+                case "letter":
+                    unitIter = aJCas.getAnnotationIndex(Letter.type).iterator();
+                    break;
+            }
+
+            int unitCount = 0; // for storing the number of entities (letters/syllables)
+
+            // iterate over all units
+            while ((unitIter != null) && unitIter.hasNext()) {
+                Annotation anno = (Annotation) unitIter.next();
+                String annoStr = anno.getCoveredText();
+                int unitBegin = anno.getBegin();
+
+                //count the number of syllable/letters in the token
+                if (unitBegin >= tokenBegin && unitBegin < tokenEnd) {
+                    unitCount++;
+                }
+            }
 
 			stats.addValue(unitCount);
 

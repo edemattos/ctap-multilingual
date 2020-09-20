@@ -152,7 +152,8 @@ public class Analysis implements Serializable {
 	public static class AnalysisLanguageOptions {
 		public static String ENGLISH = "EN"; 
 		public static String GERMAN = "DE";  
-		public static String DUTCH = "NL";  
+		public static String DUTCH = "NL";
+		public static String PORTUGUESE = "PT";
 	}
 	
 }

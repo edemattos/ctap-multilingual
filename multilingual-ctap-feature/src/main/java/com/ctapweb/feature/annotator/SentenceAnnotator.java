@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +30,7 @@ import com.ctapweb.feature.logging.message.InitializingAEMessage;
 import com.ctapweb.feature.logging.message.LoadLangModelMessage;
 import com.ctapweb.feature.logging.message.ProcessingDocumentMessage;
 import com.ctapweb.feature.type.Sentence;
+import com.ctapweb.feature.util.SupportedLanguages;
 
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
@@ -81,12 +85,22 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			modelFilePath = getContext().getResourceFilePath(languageSpecificResourceKey);
 
-			logger.trace(LogMarker.UIMA_MARKER, 
-					new LoadLangModelMessage(languageSpecificResourceKey, modelFilePath));
+			// Stanza models are currently being hosted by the web service
+			if (modelFilePath != null) {
+				logger.trace(LogMarker.UIMA_MARKER,
+						new LoadLangModelMessage(languageSpecificResourceKey, modelFilePath));
+			}
 
-			segmenter = new OpenNLPSentenceSegmenter(modelFilePath);
-			// add switch statement here to allow for different instantiations; see example in ParseTreeAnnotator.java
-			
+			switch (lCode) {
+				case SupportedLanguages.PORTUGUESE:
+					segmenter = new StanzaSentenceSegmenter();
+					break;
+				case SupportedLanguages.GERMAN:
+				case SupportedLanguages.DUTCH:
+				case SupportedLanguages.ENGLISH:
+					segmenter = new OpenNLPSentenceSegmenter(modelFilePath);
+					break;
+			}
 		} catch (ResourceAccessException e) {
 			logger.throwing(e);
 			throw new ResourceInitializationException("could_not_access_data",
@@ -131,7 +145,7 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
 			annotation.setBegin(span.getStart());
 			annotation.setEnd(span.getEnd());
 			annotation.addToIndexes();
-			//			logger.info("sentence: " + annotation.getBegin() + ", " + annotation.getEnd() + " "  + annotation.getCoveredText());
+			//logger.info("sentence: " + annotation.getBegin() + ", " + annotation.getEnd() + " "  + annotation.getCoveredText());
 		}
 
 	}
@@ -176,6 +190,29 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
 		@Override
 		public Span[] segment(String text) {
 			return openNlpSentenceDetector.sentPosDetect(text);
+		}
+	}
+
+	/**
+	 * Wrapper for Stanza by Stanford NLP (https://stanfordnlp.github.io/stanza/)
+	 * For each text, an HTTP request is made to a containerized Python web service
+	 * API: https://github.com/lingmod-tue/stanza-api
+	 * Java implementation: https://github.com/lingmod-tue/stanza-java
+	 *
+	 * @author edemattos, rziai
+	 */
+	private class StanzaSentenceSegmenter implements SentenceSegmenter {
+
+		@Override
+		public Span[] segment(String text) {
+
+			List<Span> spans = new ArrayList<>();
+			for (String span : text.split("\n\n")[1].trim().split("\t")) {
+				int b = Integer.parseInt(span.split("-")[0]);
+				int e = Integer.parseInt(span.split("-")[1]);
+				spans.add(new Span(b, e));
+			}
+			return Arrays.copyOf(spans.toArray(), spans.size(), Span[].class);
 		}
 	}
 }

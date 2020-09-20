@@ -46,6 +46,15 @@ AAE dependency:
 			<mandatory>true</mandatory>
 		</configurationParameter>
 		<configurationParameter>
+			<name>LexicalTypePT</name>
+			<description>options:
+
+			</description>
+			<type>String</type>
+			<multiValued>false</multiValued>
+			<mandatory>true</mandatory>
+		</configurationParameter>
+		<configurationParameter>
 			<name>LanguageCode</name>
 			<type>String</type>
 			<multiValued>false</multiValued>
@@ -61,6 +70,12 @@ AAE dependency:
 		</nameValuePair>
 		<nameValuePair>
 			<name>LexicalTypeDE</name>
+			<value>
+				<string>noun</string>
+			</value>
+		</nameValuePair>
+		<nameValuePair>
+			<name>LexicalTypePT</name>
 			<value>
 				<string>noun</string>
 			</value>
@@ -86,6 +101,7 @@ AAE dependency:
                 <languagesSupported>
                     <language>EN</language>
                     <language>DE</language>
+					<language>PT</language>
                     <!-- add new language here -->
                 </languagesSupported>
 		</capability>

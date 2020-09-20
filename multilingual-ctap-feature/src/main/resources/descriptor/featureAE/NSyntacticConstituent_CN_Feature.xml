@@ -34,6 +34,13 @@ AAE dependency:
         <multiValued>true</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+        <configurationParameter>
+        <name>tregexPatternsPT</name>
+        <description>Patterns of the constituents in Tregex format (Portuguese)</description>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     <configurationParameter>
         <name>LanguageCode</name>
         <type>String</type>
@@ -82,6 +89,14 @@ FT		Frgment T-units</description>
           </array>
         </value>
       </nameValuePair>
+        <nameValuePair>
+        <name>tregexPatternsPT</name>
+        <value>
+          <array>
+            <string>NP|N' [&lt; (DET $+ N')] | [&lt; (NOUN $+ ADJP|PP) ] !> NP|N'</string>
+          </array>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
@@ -101,6 +116,7 @@ FT		Frgment T-units</description>
             <languagesSupported>
                 <language>DE</language>
                 <language>EN</language>
+                <language>PT</language>
                 <!-- add new language here -->
             </languagesSupported>
       </capability>

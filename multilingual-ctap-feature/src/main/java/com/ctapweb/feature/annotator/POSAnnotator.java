@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import com.ctapweb.feature.logging.message.ProcessingDocumentMessage;
 import com.ctapweb.feature.type.POS;
 import com.ctapweb.feature.type.Sentence;
 import com.ctapweb.feature.type.Token;
+import com.ctapweb.feature.util.SupportedLanguages;
 
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
@@ -77,11 +79,22 @@ public class POSAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			POSModelFilePath = getContext().getResourceFilePath(languageSpecificResourceKey);
 
-			logger.trace(LogMarker.UIMA_MARKER, 
-					new LoadLangModelMessage(languageSpecificResourceKey, POSModelFilePath));
+			// Stanza models are currently being hosted by the web service
+			if (POSModelFilePath != null) {
+				logger.trace(LogMarker.UIMA_MARKER,
+						new LoadLangModelMessage(languageSpecificResourceKey, POSModelFilePath));
+			}
 
-			posTagger = new OpenNLPPosTagger(POSModelFilePath);
-			// add switch statement here to allow for different instantiations; see example in ParseTreeAnnotator.java
+			switch (lCode) {
+				case SupportedLanguages.PORTUGUESE:
+					posTagger = new StanzaPOSTagger();
+					break;
+				case SupportedLanguages.GERMAN:
+				case SupportedLanguages.DUTCH:
+				case SupportedLanguages.ENGLISH:
+					posTagger = new OpenNLPPosTagger(POSModelFilePath);
+					break;
+			}
 
 		} catch (ResourceAccessException e) {
 			logger.throwing(e);
@@ -114,38 +127,39 @@ public class POSAnnotator extends JCasAnnotator_ImplBase {
 		logger.trace(LogMarker.UIMA_MARKER, 
 				new ProcessingDocumentMessage(aeType, aeName, aJCas.getDocumentText()));
 
+		// Get document text
+		String docText = aJCas.getDocumentText();
+
 		//iterate through all sentences
 		Iterator sentIter = aJCas.getAnnotationIndex(Sentence.type).iterator();
 		while (sentIter.hasNext()) {
 			Sentence sent = (Sentence) sentIter.next();
-			int sentStart = sent.getBegin();
-			int sentEnd = sent.getEnd();
-			List<Token> sentTokens = new ArrayList<>();
-			
+
 			//iterate through all tokens
+			List<Token> sentTokens = new ArrayList<>();
 			Iterator tokenIter = aJCas.getAnnotationIndex(Token.type).iterator(false);
 			while(tokenIter.hasNext()) {
 				Token token = (Token) tokenIter.next();
-				if(token.getBegin() >= sentStart && token.getEnd() <= sentEnd) {
+				if(token.getBegin() >= sent.getBegin() && token.getEnd() <= sent.getEnd()) {
 					sentTokens.add(token);
 				}
 			}
 
 			//get POS tags
-			String[] tags = posTagger.tag(sentTokens);
+			String[] tags = posTagger.tag(sentTokens, docText);
 
 			//populate the CAS
-			for(int i = 0; i < tags.length; i++) {
+			for(int i = 0; i < sentTokens.size(); i++) {
 				Token token = sentTokens.get(i);
-				POS annotation = new POS(aJCas);
-				annotation.setBegin(token.getBegin()); 
-				annotation.setEnd(token.getEnd());
-				annotation.setTag(tags[i]);
-				annotation.addToIndexes();
-				logger.trace(LogMarker.UIMA_MARKER, "POSAnnotator: process: used tag " + tags[i]); // TODO developing
+				if (token.getBegin() >= sent.getBegin() && token.getEnd() <= sent.getEnd()) {
+					POS annotation = new POS(aJCas);
+					annotation.setBegin(token.getBegin());
+					annotation.setEnd(token.getEnd());
+					annotation.setTag(tags[i]);
+					annotation.addToIndexes();
+				}
 			}
 		}
-
 	}
 
 	@Override
@@ -161,7 +175,7 @@ public class POSAnnotator extends JCasAnnotator_ImplBase {
 	 * @author zweiss
 	 */
 	private abstract class POSTagger {
-		abstract String[] tag(List<Token> tokenizedSentence);
+		abstract String[] tag(List<Token> tokenizedSentence, String sentence);
 
 		//convert the list of tokens in the sentence to a String array
 		protected String[] convertTokenListToStringArray(List<Token> tokenList) {
@@ -192,10 +206,38 @@ public class POSAnnotator extends JCasAnnotator_ImplBase {
 		}
 
 		@Override
-		public String[] tag(List<Token> tokenizedSentence) {
+		public String[] tag(List<Token> tokenizedSentence, String sentence) {
 			String[] tokenArray = convertTokenListToStringArray(tokenizedSentence);
 			return openNlpPOSTagger.tag(tokenArray);
 		}
 	}
-	
+
+	/**
+	 * Wrapper for Stanza by Stanford NLP (https://stanfordnlp.github.io/stanza/)
+	 * For each text, an HTTP request is made to a containerized Python web service
+	 * API: https://github.com/lingmod-tue/stanza-api
+	 * Java implementation: https://github.com/lingmod-tue/stanza-java
+	 *
+	 * @author edemattos, rziai
+	 */
+	private class StanzaPOSTagger extends POSTagger {
+
+		@Override
+		public String[] tag(List<Token> tokenizedSentence, String doc) {
+
+			List<String> tags = new ArrayList<>();
+			String[] spans = doc.split("\n\n")[2].trim().split("\t");
+			String[] pos = doc.split("\n\n")[3].trim().split("\t");
+
+			for (Token t : tokenizedSentence) {
+				for (int i = 0; i < spans.length; i++){
+					if ((Integer.parseInt(spans[i].split("-")[0]) == t.getBegin()) &&
+							(Integer.parseInt(spans[i].split("-")[1]) == t.getEnd())) {
+						tags.add(pos[i]);
+					}
+				}
+			}
+			return Arrays.copyOf(tags.toArray(), tags.size(), String[].class);
+		}
+	}
 }

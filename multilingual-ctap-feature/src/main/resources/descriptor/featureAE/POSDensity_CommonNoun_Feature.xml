@@ -9,6 +9,7 @@
 		<name>POS Density Feature: Common Noun</name>
 		<description>Calculates Common Noun density of the text.
 			Common Nouns include for German: the Tiger tag NN.
+			for Portuguese: the Universal Dependencies tag NOUN
 			This feature is not available for English.
 
 			Formula:
@@ -47,6 +48,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 
 		<configurationParameterSettings>
@@ -54,6 +64,12 @@
 				<name>POSTypeDE</name>
 				<value>
 					<string>NN</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
+				<value>
+					<string>NOUN</string>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -77,6 +93,7 @@
 				</outputs>
 				<languagesSupported>
 					<language>DE</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

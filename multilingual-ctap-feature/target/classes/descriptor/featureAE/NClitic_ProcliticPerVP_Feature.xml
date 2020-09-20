@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+    <primitive>true</primitive>
+    <annotatorImplementationName>com.ctapweb.feature.featureAE.NCliticAE</annotatorImplementationName>
+    <analysisEngineMetaData>
+        <name>Number of Clitic Feature per VP - Proclitic</name>
+        <description>
+            Calculates the number of proclitics per verb phrase in a text
+            as defined in the appropriate WordCategories class.
+
+            AAE dependency:
+            SentenceAnnotator.xml
+            TokenAnnotator.xml
+            POSAnnotator.xml
+            DependencyParseAnnotator.xml
+            ParseTreeAnnotator.xml
+            NSyntacticConstituent_VP_Feature.xml
+        </description>
+        <version>1.0</version>
+        <vendor>Eric DeMattos</vendor>
+        <configurationParameters>
+            <configurationParameter>
+                <name>aeID</name>
+                <type>Integer</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>LanguageCode</name>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>Scope</name>
+                <description>
+                    Can be one of the following:
+                    ALL
+                    PROCLISIS
+                    ENCLISIS
+                    MESOCLISIS
+                </description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>denominator</name>
+                <description>options:
+	                nVP		number of verb phrases</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+        </configurationParameters>
+        <configurationParameterSettings>
+            <nameValuePair>
+                <name>Scope</name>
+                <value>
+                    <string>PROCLISIS</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>denominator</name>
+                <value>
+                    <string>nVP</string>
+                </value>
+            </nameValuePair>
+        </configurationParameterSettings>
+        <typeSystemDescription>
+            <imports>
+                <import location="../type_system/feature_type/NCliticType.xml"/>
+            </imports>
+        </typeSystemDescription>
+        <typePriorities/>
+        <fsIndexCollection/>
+        <capabilities>
+            <capability>
+                <inputs>
+                    <type allAnnotatorFeatures="true">com.ctapweb.feature.type.NSyntacticConstituent</type>
+                    <type allAnnotatorFeatures="true">com.ctapweb.feature.type.DependencyParse</type>
+                </inputs>
+                <outputs>
+                    <type allAnnotatorFeatures="true">com.ctapweb.feature.type.NClitic</type>
+                </outputs>
+                <languagesSupported>
+                    <language>PT</language>
+                    <!-- add new language here -->
+                </languagesSupported>
+            </capability>
+        </capabilities>
+        <operationalProperties>
+            <modifiesCas>true</modifiesCas>
+            <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+            <outputsNewCASes>false</outputsNewCASes>
+        </operationalProperties>
+    </analysisEngineMetaData>
+    <resourceManagerConfiguration/>
+</analysisEngineDescription>

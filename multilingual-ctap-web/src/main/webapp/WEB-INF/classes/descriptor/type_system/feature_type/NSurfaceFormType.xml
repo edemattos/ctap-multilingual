@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>Number of Tokens</name>
+    <description>The number of token feature type.
+        Extends: ComplexityFeatureBase.
+        Dependency:
+        Feature types: none
+        Linguistic types: SurfaceForm
+    </description>
+    <version>1.0</version>
+    <vendor>Eric DeMattos</vendor>
+    <imports>
+        <import location="ComplexityFeatureBaseType.xml"/>
+        <import location="../linguistic_type/SurfaceFormType.xml"/>
+    </imports>
+    <types>
+        <typeDescription>
+            <name>com.ctapweb.feature.type.NSurfaceForm</name>
+            <description>number of tokens in the document</description>
+            <supertypeName>com.ctapweb.feature.type.ComplexityFeatureBase</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

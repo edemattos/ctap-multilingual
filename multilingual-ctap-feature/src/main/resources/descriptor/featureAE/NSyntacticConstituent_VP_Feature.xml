@@ -4,7 +4,7 @@
   <primitive>true</primitive>  <annotatorImplementationName>com.ctapweb.feature.featureAE.NSyntacticConstituentAE</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Number of Syntactic Constituents: Verb Phrase</name>
-    <description>Calculates the number of a specific syntactic constituents in the text. This feature counts the number of verb phrases in the text. 
+    <description>Calculates the number of a specific syntactic constituents in the text. This feature counts the number of verb phrases in the text.
 
 AAE dependency:
 	SentenceAnnotator.xml
@@ -34,9 +34,16 @@ AAE dependency:
         <multiValued>true</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+        <configurationParameter>
+        <name>tregexPatternsPT</name>
+        <description>Patterns of the constituents in Tregex format (Portuguese)</description>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     <configurationParameter>
         <name>constituentType</name>
-        <description>One of the following: 
+        <description>One of the following:
 VP      Verb Phrases
 C       Clauses
 T       T-units
@@ -84,7 +91,15 @@ RS      Relative clauses
         <value>
           <array>
             <string>@VP</string> <!-- this is how it is in the old complexity code -->
-            <!-- <string>/V.(FIN|IMP|PP|FIN)/</string> --> <!-- this seems to make more sense to me --> 
+            <!-- <string>/V.(FIN|IMP|PP|FIN)/</string> --> <!-- this seems to make more sense to me -->
+          </array>
+        </value>
+      </nameValuePair>
+        <nameValuePair>
+        <name>tregexPatternsPT</name>
+        <value>
+          <array>
+              <string>S &lt; VP</string>
           </array>
         </value>
       </nameValuePair>
@@ -107,6 +122,7 @@ RS      Relative clauses
             <languagesSupported>
                 <language>EN</language>
                 <language>DE</language>
+                <language>PT</language>
                 <!-- add new language here -->
             </languagesSupported>
       </capability>

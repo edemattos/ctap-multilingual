@@ -39,6 +39,7 @@
 				</outputs>
 				<languagesSupported>
 					<language>de</language>
+					<language>pt</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

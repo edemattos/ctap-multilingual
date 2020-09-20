@@ -21,10 +21,15 @@
 			Token features take into consideration all word tokens, while type
 			features calculate only unique tokens.
 
-			This feature calculates lexical sophistication with the Age of
+			For English, this feature calculates lexical sophistication with the Age of
 			Acquisition norm list by Gilhooly and Logie (1980), which is included
 			in the MRC Psycholinguistic Database
 			(http://websites.psychology.uwa.edu.au/school/MRCDatabase/mrc2.html).
+
+			For Portuguese, it uses the norm list by Cameirão and Vicente (2010)
+			(https://link.springer.com/article/10.3758/BRM.42.2.474) which is based on
+			a different scale defined by Carroll and White (1973) [Should this be a
+			separate feature entirely, then?]
 
 			AAE dependency:
 			SentenceAnnotator.xml
@@ -99,6 +104,7 @@
 				</outputs>
                 <languagesSupported>
                     <language>EN</language>
+					<language>PT</language>
                     <!-- add new language here -->
                 </languagesSupported>
 			</capability>
@@ -119,6 +125,15 @@
 			</interfaceName>
 			<optional>false</optional>
 		</externalResourceDependency>
+		<externalResourceDependency>
+			<key>lookUpTablePT</key>
+			<description>a look up table is the frequency list (or other
+				word-value mapping lists) with which word sophistication values are
+				obtained.</description>
+			<interfaceName>com.ctapweb.feature.util.LookUpTableResource
+			</interfaceName>
+			<optional>false</optional>
+		</externalResourceDependency>
 	</externalResourceDependencies>
 	<resourceManagerConfiguration>
 		<externalResources>
@@ -132,11 +147,23 @@
 				<implementationName>com.ctapweb.feature.util.LookUpTableResource_Impl
 				</implementationName>
 			</externalResource>
+			<externalResource>
+        		<name>AoAPT</name>
+        		<description>Age of Acquisition from Cameirão and Vicente (2010)</description>
+        		<fileResourceSpecifier>
+          			<fileUrl>file:table/pt/PT_aoa_Cameirao_Vicente_2010.csv</fileUrl>
+        		</fileResourceSpecifier>
+        		<implementationName>com.ctapweb.feature.util.LookUpTableResource_Impl</implementationName>
+      		</externalResource>
 		</externalResources>
 		<externalResourceBindings>
 			<externalResourceBinding>
 				<key>lookUpTableEN</key>
 				<resourceName>AoA</resourceName>
+			</externalResourceBinding>
+			<externalResourceBinding>
+				<key>lookUpTablePT</key>
+				<resourceName>AoAPT</resourceName>
 			</externalResourceBinding>
 		</externalResourceBindings>
 	</resourceManagerConfiguration>

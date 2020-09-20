@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<analysisEngineDescription
-	xmlns="http://uima.apache.org/resourceSpecifier">
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
 	<frameworkImplementation>org.apache.uima.java</frameworkImplementation>
 	<primitive>true</primitive>
-	<annotatorImplementationName>com.ctapweb.feature.annotator.SyllableAnnotator
-	</annotatorImplementationName>
+	<annotatorImplementationName>com.ctapweb.feature.annotator.SyllableAnnotator</annotatorImplementationName>
 	<analysisEngineMetaData>
 		<name>Syllable Annotator</name>
-		<description>Annotates syllables in each token.
+		<description>
+			Annotates syllables in each token.
 
 			AAE dependency:
 			SentenceAnnotator.xml
-			TokenAnnotator.xml
+			SurfaceFormAnnotator.xml
 		</description>
 		<version>1.0</version>
 		<vendor>Xiaobin Chen</vendor>
@@ -27,8 +26,7 @@
 		<configurationParameterSettings />
 		<typeSystemDescription>
 			<imports>
-				<import
-					location="../type_system/linguistic_type/SyllableType.xml" />
+				<import location="../type_system/linguistic_type/SyllableType.xml" />
 			</imports>
 		</typeSystemDescription>
 		<typePriorities />
@@ -36,17 +34,16 @@
 		<capabilities>
 			<capability>
 				<inputs>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Token
-					</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.SurfaceForm</type>
 				</inputs>
 				<outputs>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Syllable
-					</type>
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Syllable</type>
 				</outputs>
 				<languagesSupported>
 					<language>EN</language>
 					<language>DE</language>
                     <language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

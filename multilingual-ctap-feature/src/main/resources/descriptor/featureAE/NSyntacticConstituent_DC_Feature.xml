@@ -43,8 +43,16 @@
 				<mandatory>true</mandatory>
 			</configurationParameter>
 			<configurationParameter>
+				<name>tregexPatternsPT</name>
+				<description>Patterns of the constituents in Tregex format (for Portuguese)
+				</description>
+				<type>String</type>
+				<multiValued>true</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
+			<configurationParameter>
 				<name>constituentType</name>
-        <description>One of the following: 
+        <description>One of the following:
 VP      Verb Phrases
 C       Clauses
 T       T-units
@@ -90,18 +98,26 @@ RS      Relative clauses
 				<name>tregexPatternsDE</name>
 				<value>
 					<array>
-						<!-- dep clause + conjunction: an S that a) directly dominates a conjunction, 
-							relative pronoun or an interrogative pronoun, b) dominates and NP that dominates 
+						<!-- dep clause + conjunction: an S that a) directly dominates a conjunction,
+							relative pronoun or an interrogative pronoun, b) dominates and NP that dominates
 							a relative pronoun or an interrogative pronoun -->
 						<string>(@S [&lt; 1 KOUS|KOUI|KOKOM|PRELAT|PRELS|PRELS-SB|PRELS-OA|PRELS-DA|PWAT|PWS|PWAV] | [&lt; (@NP &lt; PRELAT|PRELS|PRELS-SB|PRELS-OA|PRELS-DA|PWAT|PWS|PWAV) ] | [&lt; (@AP &lt; PRELAT|PRELS|PRELS-SB|PRELS-OA|PRELS-DA|PWAT|PWS|PWAV) ] ) &gt;&gt; S|CS|DL &amp; !&gt; CS </string>
-						<!-- dep clause without conjunction: an S that a) directly dominates a 
-							finite Verb and is followed by a comma, b) immediately dominates a NP, which 
-							is followed by a finite Verb, and the S is followed by a comma and is a decsendent 
+						<!-- dep clause without conjunction: an S that a) directly dominates a
+							finite Verb and is followed by a comma, b) immediately dominates a NP, which
+							is followed by a finite Verb, and the S is followed by a comma and is a decsendent
 							of S or CS (clause or coordinated clause -->
 						<string>(@S [&lt;1 (VVFIN|VAFIN|VMFIN &lt;&lt;, !/\\?/) ] . /,/ | [&lt;1 (@NP . VVFIN|VAFIN|VMFIN ) ] , /,/ ) &gt; S|CS|DL &amp; !&gt; CS </string>
 						<!-- a to infinitive that has the function of a dependent clause -->
 						<string>@VP [&lt; VZ , /,/] | [&lt; VZ . /,/]</string>
 					</array>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>tregexPatternsPT</name>
+				<value>
+                    <array>
+                        <string>CP [&lt; SCONJ | &lt; S] !> PP|VP</string>  <!-- same as relative clause -->
+                    </array>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -118,7 +134,7 @@ RS      Relative clauses
 				<inputs>
 					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.ParseTree
 					</type>
-				</inputs> 
+				</inputs>
 				<outputs>
 					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.NSyntacticConstituent
 					</type>
@@ -126,6 +142,7 @@ RS      Relative clauses
 				<languagesSupported>
 					<language>EN</language>
 					<language>DE</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

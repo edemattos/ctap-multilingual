@@ -13,6 +13,7 @@
 			English: include the Penn Treebank tag DT,
 			for German: the Tiger tag ART
 			for Dutch: the CGN tag ART
+			for Portuguese: the Universal Dependencies tag DET
 
 			Formula:
 			DTDensity = numDT / numTokens
@@ -91,6 +92,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
@@ -109,6 +119,12 @@
 				<name>POSTypeNL</name>
 				<value>
 					<string>ART</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
+				<value>
+					<string>DET</string>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -133,6 +149,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

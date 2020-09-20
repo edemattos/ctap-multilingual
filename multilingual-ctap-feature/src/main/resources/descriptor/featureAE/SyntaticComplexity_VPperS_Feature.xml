@@ -91,6 +91,7 @@ AAE dependency:
             <languagesSupported>
                 <language>DE</language>
                 <language>EN</language>
+                <language>PT</language>
                 <!-- add new language here -->
             </languagesSupported>
       </capability>

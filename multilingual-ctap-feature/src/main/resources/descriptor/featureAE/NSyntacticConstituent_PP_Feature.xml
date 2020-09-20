@@ -27,6 +27,13 @@
         <multiValued>true</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+        <configurationParameter>
+        <name>tregexPatternsPT</name>
+        <description>Patterns of the constituents in Tregex format (Portuguese)</description>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     <configurationParameter>
         <name>constituentType</name>
         <description>One of the following: 
@@ -75,6 +82,14 @@ RS      Relative clauses
           </array>
         </value>
       </nameValuePair>
+        <nameValuePair>
+        <name>tregexPatternsPT</name>
+        <value>
+          <array>
+            <string>PP &lt; P'|ADP !> PP|P'</string>
+          </array>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
@@ -93,6 +108,7 @@ RS      Relative clauses
         </outputs>
             <languagesSupported>
                 <language>DE</language>
+                <language>PT</language>
                 <!-- add new language here -->
             </languagesSupported>
       </capability>

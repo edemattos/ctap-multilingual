@@ -13,6 +13,7 @@
 			for English: the Penn Treebank tags JJ, JJR and JJS,
 			for German: the Tiger tags ADJA and ADJD
 			for Dutch: the CGN tag Adj
+			for Portuguese: the Universal Dependencies tag ADJ
 
 			Formula:
 			adjDensity =
@@ -92,6 +93,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 
 		<configurationParameterSettings>
@@ -109,6 +119,12 @@
 			</nameValuePair>
 			<nameValuePair>
 				<name>POSTypeNL</name>
+				<value>
+					<string>adjective</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
 				<value>
 					<string>adjective</string>
 				</value>
@@ -137,6 +153,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

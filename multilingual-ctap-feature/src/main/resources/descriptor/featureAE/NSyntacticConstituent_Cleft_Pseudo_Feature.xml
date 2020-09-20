@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+    <primitive>true</primitive>
+    <annotatorImplementationName>com.ctapweb.feature.featureAE.NSyntacticConstituentAE</annotatorImplementationName>
+    <analysisEngineMetaData>
+        <name>Number of Syntactic Constituents: Pseudoclefts</name>
+        <description>
+            Calculates the number of a specific syntactic constituents in the text.
+            This feature counts the number of pseudoclefts in the text.
+
+            English: What ... is ...
+            Portuguese: Que ... é ...
+
+            AAE dependency:
+            SentenceAnnotator.xml
+            TokenAnnotator.xml
+            POSAnnotator.xml
+            ParseTreeAnnotator.xml
+        </description>
+        <version>1.0</version>
+        <vendor>Eric DeMattos</vendor>
+        <configurationParameters>
+            <configurationParameter>
+                <name>aeID</name>
+                <type>Integer</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>tregexPatternsPT</name>
+                <description>Patterns of the constituents in Tregex format (Portuguese)</description>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>constituentType</name>
+                <description>One of the following:
+                    VP Verb Phrases
+                    C Clauses
+                    T T-units
+                    DC Dependent Clauses
+                    CT Complex T-unit
+                    CP Coordinate Phrases
+                    CN Complex nominal
+                    FC Fragment Clauses
+                    FT Frgment T-units
+                    NP Noun phrases
+                    PP Prepositional phrases
+                    CPP Complex Prepoistional phrases
+                    VC Verb cluster
+                    RS Relative clauses
+                </description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>LanguageCode</name>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+        </configurationParameters>
+        <configurationParameterSettings>
+            <nameValuePair>
+                <name>constituentType</name>
+                <value>
+                    <string>PC</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>tregexPatternsPT</name>
+                <value>
+                    <array>
+                        <string>S|VP [ &lt; ((NP [&lt; ((NP &lt; (PRON [&lt; /[Oo]|[Qq]uem/])) [$+ S|NP] ) ] ) [$+ (S|VP [&lt;&lt; (VP|VERB|AUX [&lt;1 /[Éé]|[Ff](o(i|r(am?|em)?|ssem?))|[Ee]ram?|[Ss](e(r(iam?|ão|á)|jam?)|ão|ido)/])]) ] ) ]</string>
+                    </array>
+                </value>
+            </nameValuePair>
+        </configurationParameterSettings>
+        <typeSystemDescription>
+            <imports>
+                <import location="../type_system/feature_type/NSyntacticConstituentType.xml"/>
+            </imports>
+        </typeSystemDescription>
+        <typePriorities/>
+        <fsIndexCollection/>
+        <capabilities>
+            <capability>
+                <inputs>
+                    <type allAnnotatorFeatures="true">com.ctapweb.feature.type.ParseTree</type>
+                </inputs>
+                <outputs>
+                    <type allAnnotatorFeatures="true">com.ctapweb.feature.type.NSyntacticConstituent</type>
+                </outputs>
+                <languagesSupported>
+                    <language>PT</language>
+                    <!-- add new language here -->
+                </languagesSupported>
+            </capability>
+        </capabilities>
+        <operationalProperties>
+            <modifiesCas>true</modifiesCas>
+            <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+            <outputsNewCASes>false</outputsNewCASes>
+        </operationalProperties>
+    </analysisEngineMetaData>
+    <resourceManagerConfiguration/>
+</analysisEngineDescription>

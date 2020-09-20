@@ -11,6 +11,7 @@
 			for English: the Penn Treebank tags PRP, PRP$, WP, WP$,
 			for German the Tiger tags: PDS PDAT PIS PIAT PIDAT PPER PPOSS PPOSAT PRELS PRELAT PRF PWS PWSAT PWAV PAV
 			for Dutch: the CGN tag Pron
+			for Portuguese: the Universal Dependencies tag PRON
 
 			Formula:
 			pronounDensity =
@@ -91,6 +92,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
@@ -107,6 +117,12 @@
 			</nameValuePair>
 			<nameValuePair>
 				<name>POSTypeNL</name>
+				<value>
+					<string>pronouns</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
 				<value>
 					<string>pronouns</string>
 				</value>
@@ -133,6 +149,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

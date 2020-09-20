@@ -67,10 +67,10 @@ public class TokenTypeAnnotator extends JCasAnnotator_ImplBase {
 			// TODO LCA : decide if we want to keep this equivalence mapping
 			// for German and Dutch
 			tokenStr = tokenStr.replace("ö", "oe");
-			tokenStr = tokenStr.replace("ü", "ue");
+			tokenStr = tokenStr.replace("ü", "ue"); // conflict with Portuguese
 			tokenStr = tokenStr.replace("ä", "ae");
 			tokenStr = tokenStr.replace("ß", "ss");
-			// for Dutch
+			// for Dutch and Portuguese
 			tokenStr = tokenStr.replace("á", "a");
 			tokenStr = tokenStr.replace("ó", "o");
 			tokenStr = tokenStr.replace("ú", "u");
@@ -86,6 +86,10 @@ public class TokenTypeAnnotator extends JCasAnnotator_ImplBase {
 			tokenStr = tokenStr.replace("û", "u");
 			tokenStr = tokenStr.replace("ê", "e");
 			tokenStr = tokenStr.replace("î", "i");
+			// for Portuguese
+			tokenStr = tokenStr.replace("ç", "c");
+			tokenStr = tokenStr.replace("ã", "a");
+			tokenStr = tokenStr.replace("õ", "o");
 
 			// ignore punctuation marks
 			if(!Pattern.matches("\\p{Punct}", tokenStr) && !tTypes.contains(tokenStr)) {

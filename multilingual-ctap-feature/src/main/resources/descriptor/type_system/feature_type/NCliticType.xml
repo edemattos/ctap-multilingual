@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>Number of Clitic type</name>
+    <description>
+        Number of clitics.
+        Extends: ComplexityFeatureBase.
+        Dependency:
+        Feature types: NSyntacticConstituent
+        Linguistic types: Token
+    </description>
+    <version>1.0</version>
+    <vendor>Eric DeMattos</vendor>
+    <imports>
+        <import location="ComplexityFeatureBaseType.xml"/>
+        <import location="NSyntacticConstituentType.xml" />
+    </imports>
+    <types>
+        <typeDescription>
+            <name>com.ctapweb.feature.type.NClitic</name>
+            <description>Number of clitic clusters in the document</description>
+            <supertypeName>com.ctapweb.feature.type.ComplexityFeatureBase</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

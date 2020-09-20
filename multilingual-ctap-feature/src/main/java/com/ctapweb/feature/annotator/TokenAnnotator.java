@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
+import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +30,7 @@ import com.ctapweb.feature.logging.message.LoadLangModelMessage;
 import com.ctapweb.feature.logging.message.ProcessingDocumentMessage;
 import com.ctapweb.feature.type.Sentence;
 import com.ctapweb.feature.type.Token;
+import com.ctapweb.feature.util.SupportedLanguages;
 
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
@@ -83,11 +84,22 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			modelFilePath = getContext().getResourceFilePath(languageSpecificResourceKey);
 
-			logger.trace(LogMarker.UIMA_MARKER, 
-					new LoadLangModelMessage(languageSpecificResourceKey, modelFilePath));
+			// Stanza models are currently being hosted by the web service
+			if (modelFilePath != null) {
+				logger.trace(LogMarker.UIMA_MARKER,
+						new LoadLangModelMessage(languageSpecificResourceKey, modelFilePath));
+			}
 
-			tokenizer = new OpenNLPTokenizer(modelFilePath);
-			// add switch statement here to allow for different instantiations; see example in ParseTreeAnnotator.java
+			switch (lCode) {
+				case SupportedLanguages.PORTUGUESE:
+					tokenizer = new StanzaTokenizer();
+					break;
+				case SupportedLanguages.GERMAN:
+				case SupportedLanguages.DUTCH:
+				case SupportedLanguages.ENGLISH:
+					tokenizer = new OpenNLPTokenizer(modelFilePath);
+					break;
+			}
 
 		} catch (ResourceAccessException e) {
 			logger.throwing(e);
@@ -117,8 +129,11 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	 */
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
-		logger.trace(LogMarker.UIMA_MARKER, 
+		logger.trace(LogMarker.UIMA_MARKER,
 				new ProcessingDocumentMessage(aeType, aeName, aJCas.getDocumentText()));
+
+		// Get document text
+		String docText = aJCas.getDocumentText();
 
 		// get annotation indexes and iterator
 		Iterator sentIter = aJCas.getAnnotationIndex(Sentence.type).iterator();
@@ -127,17 +142,18 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 			Sentence sent = (Sentence) sentIter.next();
 
 			// Detect token spans
-			Span[] spans = tokenizer.tokenize(sent.getCoveredText());
+			Span[] spans = tokenizer.tokenize(sent.getCoveredText(), docText);
 
 			for (Span span : spans) {
-				Token annotation = new Token(aJCas);
-				annotation.setBegin(span.getStart() + sent.getBegin()); // the offset is absolute, so adds the sentence begin position.
-				annotation.setEnd(span.getEnd() + sent.getBegin());
-				annotation.addToIndexes();
-//				logger.info("token: " + annotation.getBegin() + ", " + annotation.getEnd() + " "  + annotation.getCoveredText());
+				if ((span.getStart() >= sent.getBegin()) && (span.getEnd() <= sent.getEnd())) {
+					Token annotation = new Token(aJCas);
+					annotation.setBegin(span.getStart());
+					annotation.setEnd(span.getEnd());
+					annotation.addToIndexes();
+					//logger.info("token: " + annotation.getBegin() + ", " + annotation.getEnd() + " "  + annotation.getCoveredText());
+				}
 			}
 		}
-
 	}
 
 	@Override
@@ -153,7 +169,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	 * @author zweiss
 	 */
 	interface CTAPTokenizer {
-		abstract Span[] tokenize(String sentence);
+		abstract Span[] tokenize(String sentence, String doc);
 	}
 
 	/**
@@ -175,9 +191,30 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 		}
 
 		@Override
-		public Span[] tokenize(String sentence) {
+		public Span[] tokenize(String sentence, String doc) {
 			return openNlpTokenizer.tokenizePos(sentence);
 		}
 		
+	}
+
+	/**
+	 * Wrapper for Stanza by Stanford NLP (https://stanfordnlp.github.io/stanza/)
+	 * For each text, an HTTP request is made to a containerized Python web service
+	 * API: https://github.com/lingmod-tue/stanza-api
+	 * Java implementation: https://github.com/lingmod-tue/stanza-java
+	 *
+	 * @author edemattos, rziai
+	 */
+	private class StanzaTokenizer implements CTAPTokenizer {
+
+		@Override
+		public Span[] tokenize(String text, String doc) {
+
+			List<Span> sp = new ArrayList<>();
+			for (String span : doc.split("\n\n")[2].trim().split("\t")) {
+				sp.add(new Span(Integer.parseInt(span.split("-")[0]), Integer.parseInt(span.split("-")[1])));
+			}
+			return Arrays.copyOf(sp.toArray(), sp.size(), Span[].class);
+		}
 	}
 }

@@ -9,7 +9,8 @@
 		<name>POS Density Feature: Punctuation</name>
 		<description>Calculates Punctuation density of the text.
 			Punctuation includes for German: the Tiger tags $, $. $(
-			and for Dutch: the CGN tag Punc
+			for Dutch: the CGN tag Punc
+			for Portuguese: the Universal Dependencies tag PUNCT
 
 			Formula:
 			punctDensity = numPunct / numTokens
@@ -58,6 +59,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 
 		<configurationParameterSettings>
@@ -69,6 +79,12 @@
 			</nameValuePair>
 			<nameValuePair>
 				<name>POSTypeNL</name>
+				<value>
+					<string>punctuation</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
 				<value>
 					<string>punctuation</string>
 				</value>
@@ -95,6 +111,7 @@
 				<languagesSupported>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

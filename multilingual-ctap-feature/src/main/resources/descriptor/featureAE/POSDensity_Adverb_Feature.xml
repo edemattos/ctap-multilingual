@@ -13,6 +13,7 @@
 			English: the Penn Treebank tags RB, RBR, RBS, WRB.
 			for German: the Tiger tag ADV.
 			for Dutch: the CGN tag Adv.
+			for Portuguese: the Universal Dependencies tag ADV
 
 			Formula:
 			advDensity = numAdverbs / numTokens
@@ -91,6 +92,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 
 		<configurationParameterSettings>
@@ -108,6 +118,12 @@
 			</nameValuePair>
 			<nameValuePair>
 				<name>POSTypeNL</name>
+				<value>
+					<string>adverb</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
 				<value>
 					<string>adverb</string>
 				</value>
@@ -135,6 +151,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

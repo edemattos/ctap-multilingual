@@ -21,13 +21,15 @@ import com.ctapweb.feature.logging.message.InitializeAECompleteMessage;
 import com.ctapweb.feature.logging.message.InitializingAEMessage;
 import com.ctapweb.feature.logging.message.PopulatedFeatureValueMessage;
 import com.ctapweb.feature.logging.message.ProcessingDocumentMessage;
+import com.ctapweb.feature.type.SurfaceForm;
 import com.ctapweb.feature.type.Syllable;
-import com.ctapweb.feature.type.Token;
 import com.ctapweb.feature.type.Word2OrMoreSyllables;
 
 /**
  * @author xiaobin
  * Calculates the number/percentage of words with more than 2 syllables.
+ *
+ * edemattos 25/07/20 : migrate from token to surface form
  */
 public class Word2OrMoreSyllablesAE extends JCasAnnotator_ImplBase {
 
@@ -121,11 +123,11 @@ public class Word2OrMoreSyllablesAE extends JCasAnnotator_ImplBase {
 		HashSet<String> typeSet = new HashSet<>();
 
 		// get token and syllable annotation iterators
-		Iterator tokenIter = aJCas.getAnnotationIndex(Token.type).iterator();
+		Iterator tokenIter = aJCas.getAnnotationIndex(SurfaceForm.type).iterator();
 
 		//iterate over all tokens and count the number of syllables in each token
 		while(tokenIter.hasNext()) {
-			Token token = (Token) tokenIter.next();
+			SurfaceForm token = (SurfaceForm) tokenIter.next();
 			String tokenStr = token.getCoveredText();
 			int tokenBegin = token.getBegin();
 			int tokenEnd = token.getEnd();

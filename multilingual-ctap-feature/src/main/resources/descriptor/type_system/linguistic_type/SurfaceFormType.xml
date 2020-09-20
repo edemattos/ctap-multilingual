@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+	<name>SurfaceForm Linguistic Type</name>
+	<description>This is the linguistic type of SurfaceForm, which extends the
+		UIMA Annotation type.
+		As a result, it contains the features of Begin and End.
+		It is used for annotating a SurfaceForm in the following languages:
+		Portuguese
+
+		Dependency:
+		Linguistic_type: Sentence</description>
+	<version>1.0</version>
+	<vendor>edemattos</vendor>
+	<imports>
+		<import location="SentenceType.xml"/>
+	</imports>
+	<types>
+		<typeDescription>
+			<name>com.ctapweb.feature.type.SurfaceForm</name>
+			<description>The SurfaceForm type.</description>
+			<supertypeName>uima.tcas.Annotation</supertypeName>
+			<features>
+				<featureDescription>
+					<name>surfaceform</name>
+					<description>the surface form as a String</description>
+					<rangeTypeName>uima.cas.String</rangeTypeName>
+				</featureDescription>
+			</features>
+		</typeDescription>
+	</types>
+</typeSystemDescription>

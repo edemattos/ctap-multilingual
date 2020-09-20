@@ -12,7 +12,7 @@
 			AAE
 			dependency:
 			SentenceAnnotator.xml
-			TokenAnnotator.xml
+			SurfaceFormAnnotator.xml
 			SyllableAnnotator.xml
 		</description>
 		<version>1.0</version>
@@ -43,7 +43,7 @@
 		<capabilities>
 			<capability>
 				<inputs>
-					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.Token
+					<type allAnnotatorFeatures="true">com.ctapweb.feature.type.SurfaceForm
 					</type>
 				</inputs>
 				<outputs>
@@ -54,6 +54,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

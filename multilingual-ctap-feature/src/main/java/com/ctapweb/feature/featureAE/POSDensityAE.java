@@ -30,6 +30,7 @@ import com.ctapweb.feature.type.POSDensity;
 import com.ctapweb.feature.util.DutchWordCategories;
 import com.ctapweb.feature.util.EnglishWordCategories;
 import com.ctapweb.feature.util.GermanWordCategories;
+import com.ctapweb.feature.util.PortugueseWordCategories;
 import com.ctapweb.feature.util.WordCategories;
 
 
@@ -72,6 +73,9 @@ public class POSDensityAE extends JCasAnnotator_ImplBase {
 				break;
 			case "NL":
 				posMapping = new DutchWordCategories();
+				break;
+			case "PT":
+				posMapping = new PortugueseWordCategories();
 				break;
 			case "EN":
 			default:  // See if this is a reasonable default

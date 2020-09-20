@@ -66,5 +66,4 @@ public class GermanWordCategories extends WordCategories {
 	public boolean isPreposition(String tag) {
 		return tag.startsWith("AP");
 	}
-
 }

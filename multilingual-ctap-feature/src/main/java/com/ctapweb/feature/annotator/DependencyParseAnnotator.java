@@ -3,6 +3,7 @@ package com.ctapweb.feature.annotator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringJoiner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -77,14 +78,21 @@ public class DependencyParseAnnotator extends JCasAnnotator_ImplBase {
 		//init parser, morphological tagger, and pos tagger 
 		try {
 			parserModelFilePath = getContext().getResourceFilePath(parseModelLanguageSpecificResourceKey);
-			logger.trace(LogMarker.UIMA_MARKER, 
-					new LoadLangModelMessage(parseModelLanguageSpecificResourceKey, parserModelFilePath));
+
+			// Stanza models are currently being hosted by the web service
+			if (parserModelFilePath != null) {
+				logger.trace(LogMarker.UIMA_MARKER,
+						new LoadLangModelMessage(parseModelLanguageSpecificResourceKey, parserModelFilePath));
+			}
 
 			switch (lCode) {
-			case SupportedLanguages.GERMAN:
-				depParser = new MateDependencyParser(parserModelFilePath);  
-				break;
-				// add new language here
+				case SupportedLanguages.PORTUGUESE:
+					depParser = new StanzaDependencyParser();
+					break;
+				case SupportedLanguages.GERMAN:
+					depParser = new MateDependencyParser(parserModelFilePath);
+					break;
+					// add new language here
 			}
 		} catch (ResourceAccessException e) {
 			logger.throwing(e);
@@ -107,66 +115,26 @@ public class DependencyParseAnnotator extends JCasAnnotator_ImplBase {
 		logger.trace(LogMarker.UIMA_MARKER, 
 				new ProcessingDocumentMessage(aeType, aeName, aJCas.getDocumentText()));
 
+		// Get document text
+		String docText = aJCas.getDocumentText();
+
+		String dTree = depParser.parse(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), docText);
+		String[] dTrees = dTree.split("\n\n");
+		int count = 0;
+
 		//iterate through all sentences
 		Iterator sentIter = aJCas.getAnnotationIndex(Sentence.type).iterator();
 		while (sentIter.hasNext()) {
 			Sentence sent = (Sentence) sentIter.next();
-			int sentStart = sent.getBegin();
-			int sentEnd = sent.getEnd();
-			List<Token> sentTokens = new ArrayList<Token>();
-			List<Lemma> sentLemmas = new ArrayList<Lemma>();
-			List<POS> sentPOS = new ArrayList<POS>();
-			List<MorphologicalTag> sentMorphologicalTags= new ArrayList<MorphologicalTag>();  // preferable if this would work
- 
-			//iterate through all lemmas
-			Iterator lemmaIter = aJCas.getAnnotationIndex(Lemma.type).iterator(false);
-			while(lemmaIter.hasNext()) {
-				Lemma lemma = (Lemma) lemmaIter.next();
-				if(lemma.getBegin() >= sentStart && lemma.getEnd() <= sentEnd) {
-					sentLemmas.add(lemma);
-				}
-			}
-			
-			//iterate through all POS tags
-			Iterator posIter = aJCas.getAnnotationIndex(POS.type).iterator(false);
-			while(posIter.hasNext()) {
-				POS posTag = (POS) posIter.next();
-				if(posTag.getBegin() >= sentStart && posTag.getEnd() <= sentEnd) {
-					sentPOS.add(posTag);
-				}
-			}
 
-			// preferable if this would work
-			//iterate through all morphological tags
-			Iterator morphIter = aJCas.getAnnotationIndex(MorphologicalTag.type).iterator(false);
-			while(morphIter.hasNext()) {
-				MorphologicalTag mtag = (MorphologicalTag) morphIter.next();
-				if(mtag.getBegin() >= sentStart && mtag.getEnd() <= sentEnd) {
-					sentMorphologicalTags.add(mtag);
-				}
-			}
-
-			//iterate through all tokens
-			Iterator tokenIter = aJCas.getAnnotationIndex(Token.type).iterator(false);
-			while(tokenIter.hasNext()) {
-				Token token = (Token) tokenIter.next();
-				if(token.getBegin() >= sentStart && token.getEnd() <= sentEnd) {
-					sentTokens.add(token);
-				}
-			}
-
-			// build parse tree based on POS and token list
-			String dTree= depParser.parse(sentTokens, sentLemmas, sentPOS, sentMorphologicalTags);  // preferable if this would work
-//			logger.trace(LogMarker.UIMA_MARKER, System.getProperty("line.separator")+dTree);  // debugging
-			
 			//populate the CAS
 			DependencyParse annotation = new DependencyParse(aJCas);
-			annotation.setBegin(sentStart);
-			annotation.setEnd(sentEnd);
-			annotation.setDependencyParse(dTree);
+			annotation.setBegin(sent.getBegin());
+			annotation.setEnd(sent.getEnd());
+			annotation.setDependencyParse(dTrees[count]);
 			annotation.addToIndexes();
+			count++;
 		}
-
 	}
 
 	@Override
@@ -183,7 +151,7 @@ public class DependencyParseAnnotator extends JCasAnnotator_ImplBase {
 	 */
 	interface DependencyParser {
 	
-		abstract String parse(List<Token> sentTokens, List<Lemma> sentLemmas, List<POS> sentPOS, List<MorphologicalTag> sentMtags); 
+		abstract String parse(List<Token> sentTokens, List<Lemma> sentLemmas, List<POS> sentPOS, List<MorphologicalTag> sentMtags, String sentence);
 	}
 
 
@@ -205,7 +173,7 @@ public class DependencyParseAnnotator extends JCasAnnotator_ImplBase {
 		}
 		
 		@Override
-		public String parse(List<Token> sentTokens, List<Lemma> sentLemmas, List<POS> sentPOS, List<MorphologicalTag> sentMtags) {
+		public String parse(List<Token> sentTokens, List<Lemma> sentLemmas, List<POS> sentPOS, List<MorphologicalTag> sentMtags, String sentence) {
 			String[] tokens = new String[sentTokens.size()];
 			String[] lemmas = new String[sentLemmas.size()];
 			String[] posTags = new String[sentPOS.size()];
@@ -233,7 +201,7 @@ public class DependencyParseAnnotator extends JCasAnnotator_ImplBase {
 
 		/**
 		 * parses (fully) initialized sentence
-		 * @param annotatedSentence
+//		 * @param annotatedSentence
 		 * @return
 		 */
 		public String parse(SentenceData09 inputSentenceData) {
@@ -242,6 +210,28 @@ public class DependencyParseAnnotator extends JCasAnnotator_ImplBase {
 			sentenceToAnalyze = mateDependencyParser.apply(sentenceToAnalyze);
 			// return conll format parse
 			return new DependencyTree(sentenceToAnalyze).toString();
+		}
+	}
+
+	/**
+	 * Wrapper for Stanza by Stanford NLP (https://stanfordnlp.github.io/stanza/)
+	 * For each text, an HTTP request is made to a containerized Python web service
+	 * API: https://github.com/lingmod-tue/stanza-api
+	 * Java implementation: https://github.com/lingmod-tue/stanza-java
+	 *
+	 * @author edemattos, rziai
+	 */
+	private class StanzaDependencyParser implements DependencyParser {
+
+		@Override
+		public String parse(List<Token> sentTokens, List<Lemma> sentLemmas, List<POS> sentPOS, List<MorphologicalTag> sentMtags, String text) {
+
+			String[] parses = text.split("\n\n");
+			StringJoiner sj = new StringJoiner("\n\n");
+			for (int i = 7; i < parses.length; i++) { // begin from index 7, because 0 through 6 are other annotations
+				sj.add(parses[i].trim());
+			}
+			return sj.toString();
 		}
 	}
 }

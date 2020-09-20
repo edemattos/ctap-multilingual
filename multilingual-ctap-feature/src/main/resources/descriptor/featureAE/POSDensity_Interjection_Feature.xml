@@ -10,6 +10,7 @@
 		<description>Calculates interjection density of the text. Interjections include
 			for English: the Penn Treebank tags UH
 			for German: the Tiger tag ITJ
+			for Portuguese: the Universal Dependencies tag INTJ
 
 			Formula:
 			interDensity = numInter / numTokens
@@ -76,6 +77,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
@@ -88,6 +98,12 @@
 				<name>POSTypeDE</name>
 				<value>
 					<string>ITJ</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
+				<value>
+					<string>INTJ</string>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -111,6 +127,7 @@
 				<languagesSupported>
 					<language>EN</language>
 					<language>DE</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

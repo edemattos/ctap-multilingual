@@ -3,6 +3,12 @@
 /* First created by JCasGen Fri Sep 09 21:52:52 CEST 2016 */
 package com.ctapweb.web.server.analysis.type;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
+
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.TypeImpl;
+import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.AnnotationBase;
@@ -10,10 +16,16 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Fri Sep 09 21:52:52 CEST 2016
- * XML source: /home/xiaobin/sync/projects/eclipse/CTAP/ctap-web/src/main/java/ch/xiaobin/app/ctap/web/server/analysis/descriptor/CorpusTextCollectionReader.xml
+ * Updated by JCasGen Mon Jul 06 12:51:32 CEST 2020
+ * XML source: /home/rziai/git/ctap-multilingual/multilingual-ctap-web/src/main/java/com/ctapweb/web/server/analysis/descriptor/CorpusTextCollectionReader.xml
  * @generated */
 public class CorpusTextInfo extends AnnotationBase {
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static String _TypeName = "com.ctapweb.web.server.analysis.type.CorpusTextInfo";
+  
   /** @generated
    * @ordered 
    */
@@ -30,17 +42,30 @@ public class CorpusTextInfo extends AnnotationBase {
   @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
+ 
+  /* *******************
+   *   Feature Offsets *
+   * *******************/ 
+   
+  public final static String _FeatName_id = "id";
+
+
+  /* Feature Adjusted Offsets */
+  private final static CallSite _FC_id = TypeSystemImpl.createCallSite(CorpusTextInfo.class, "id");
+  private final static MethodHandle _FH_id = _FC_id.dynamicInvoker();
+
+   
   /** Never called.  Disable default constructor
    * @generated */
   protected CorpusTextInfo() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
-   * @param addr low level Feature Structure reference
+   * @param casImpl the CAS this Feature Structure belongs to
    * @param type the type of this Feature Structure 
    */
-  public CorpusTextInfo(int addr, TOP_Type type) {
-    super(addr, type);
+  public CorpusTextInfo(TypeImpl type, CASImpl casImpl) {
+    super(type, casImpl);
     readObject();
   }
   
@@ -51,6 +76,7 @@ public class CorpusTextInfo extends AnnotationBase {
     super(jcas);
     readObject();   
   } 
+
 
   /** 
    * <!-- begin-user-doc -->
@@ -70,19 +96,18 @@ public class CorpusTextInfo extends AnnotationBase {
    * @generated
    * @return value of the feature 
    */
-  public long getId() {
-    if (CorpusTextInfo_Type.featOkTst && ((CorpusTextInfo_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "com.ctapweb.web.server.analysis.type.CorpusTextInfo");
-    return jcasType.ll_cas.ll_getLongValue(addr, ((CorpusTextInfo_Type)jcasType).casFeatCode_id);}
+  public long getId() { 
+    return _getLongValueNc(wrapGetIntCatchException(_FH_id));
+  }
     
   /** setter for id - sets  
    * @generated
    * @param v value to set into the feature 
    */
   public void setId(long v) {
-    if (CorpusTextInfo_Type.featOkTst && ((CorpusTextInfo_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "com.ctapweb.web.server.analysis.type.CorpusTextInfo");
-    jcasType.ll_cas.ll_setLongValue(addr, ((CorpusTextInfo_Type)jcasType).casFeatCode_id, v);}    
+    _setLongValueNfc(wrapGetIntCatchException(_FH_id), v);
+  }    
+    
   }
 
     

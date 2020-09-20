@@ -13,6 +13,7 @@
 			for English: the Penn Treebank tags CC, and IN,
 			for German: the Tiger tags KOUI KOUS KON KOKOM.
 			for Dutch: tthe CGN tag Conj
+			for Portuguese: the Universal Dependencies tags CCONJ SCONJ
 
 			Formula:
 			conjDensity = numConj / numTokens
@@ -90,6 +91,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
@@ -108,6 +118,12 @@
 				<name>POSTypeNL</name>
 				<value>
 					<string>Conj</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
+				<value>
+					<string>CCONJ SCONJ</string>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -132,6 +148,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

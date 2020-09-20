@@ -41,6 +41,7 @@
 					<language>en</language>
 					<language>de</language>
 					<language>nl</language>
+					<language>pt</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>
@@ -67,6 +68,11 @@
 			<description>A Dutch POS model to pos-tagging text.</description>
 			<optional>false</optional>
 		</externalResourceDependency>
+<!--		<externalResourceDependency>-->
+<!--			<key>POSModelPT</key>-->
+<!--			<description>A Portuguese POS model to pos-tagging text.</description>-->
+<!--			<optional>false</optional>-->
+<!--		</externalResourceDependency>-->
 	</externalResourceDependencies>
 	<resourceManagerConfiguration>
 		<externalResources>
@@ -92,6 +98,14 @@
 					<fileUrl>file:model/nl_pos_maxent.bin</fileUrl>
 				</fileResourceSpecifier>
 			</externalResource>
+<!--			<externalResource>-->
+<!--				<name>ptPOSModel</name>-->
+<!--				<description>Portuguese POS model.</description>-->
+<!--				<fileResourceSpecifier>-->
+<!--					<fileUrl>file:model/pt_pos_maxent.bin</fileUrl>-->
+					<!-- <fileUrl>file:model/pt_pos_perceptron.bin</fileUrl> -->
+<!--				</fileResourceSpecifier>-->
+<!--			</externalResource>-->
 		</externalResources>
 		<externalResourceBindings>
 			<externalResourceBinding>
@@ -106,6 +120,10 @@
 				<key>POSModelNL</key>
 				<resourceName>nlPOSModel</resourceName>
 			</externalResourceBinding>
+<!--			<externalResourceBinding>-->
+<!--				<key>POSModelPT</key>-->
+<!--				<resourceName>ptPOSModel</resourceName>-->
+<!--			</externalResourceBinding>-->
 		</externalResourceBindings>
 	</resourceManagerConfiguration>
 </analysisEngineDescription>

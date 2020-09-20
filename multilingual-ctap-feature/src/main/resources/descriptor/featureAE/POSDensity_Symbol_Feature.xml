@@ -9,6 +9,7 @@
 		<name>POS Density Feature: Symbol</name>
 		<description>Calculates symbol density of the text. Symbols include 
 			for English the Penn Treebank tag SYM.
+			for Portuguese: the Universal Dependencies tag SYM
 			This feature is not available for: German
 
 			Formula:
@@ -65,10 +66,25 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
 				<name>POSTypeEN</name>
+				<value>
+					<string>SYM</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
 				<value>
 					<string>SYM</string>
 				</value>
@@ -93,6 +109,7 @@
 				</outputs>
 				<languagesSupported>
 					<language>EN</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

@@ -11,6 +11,7 @@
 			for English: the Penn Treebank tags JJ, JJR, JJS, RB, RBR, RBS, WRB, VB, VBD, VBG, VBN, VBP, VBZ;
 			for German: the Tiger tags: ADJA ADJD ADV NN NE VVFIN VVIMP VVINF VVIZU VVPP VMFIN VMIMP VMINF VMIZU VMPP FM XY
 			for Dutch: the CGN tags: Adj, V, N, Adv
+			for Portuguese: the Universal Dependencies tags ADJ ADV NOUN PROPN VERB
 
 			Formula:
 			lexicalWordDensity = numLexicalWords / numTokens
@@ -88,6 +89,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
@@ -104,6 +114,12 @@
 			</nameValuePair>
 			<nameValuePair>
 				<name>POSTypeNL</name>
+				<value>
+					<string>lexical</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
 				<value>
 					<string>lexical</string>
 				</value>
@@ -130,6 +146,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

@@ -10,6 +10,7 @@
 		<description>Calculates the density of Subordinating Conjunctions in the text.
 			Subordinating Conjunction include
 			for German: the Tiger tags KOUS KOUI.
+			for Portuguese: the Universal Dependencies tag SCONJ
 			This feature is not available for English.
 
 			Formula:
@@ -48,6 +49,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 
 		<configurationParameterSettings>
@@ -55,6 +65,12 @@
 				<name>POSTypeDE</name>
 				<value>
 					<string>KOUS KOUI</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
+				<value>
+					<string>SCONJ</string>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -78,6 +94,7 @@
 				</outputs>
 				<languagesSupported>
 					<language>DE</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

@@ -2,6 +2,7 @@ package com.ctapweb.feature.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import is2.data.SentenceData09;
 
@@ -97,6 +98,9 @@ public class DependencyTree implements Serializable {
 		int[] pheads = new int[wordArray.length];
 		String[] plabels = new String[wordArray.length];
 		for (int i = 0; i < wordArray.length; i++) {
+
+			if (wordArray[i].trim().length() == 0) { continue; } // skip blank lines (added for current Stanza setup)
+
 			String[] wordSplit = wordArray[i].trim().split("\t");
 			id[i] = wordSplit[0];
 			forms[i] = wordSplit[1];

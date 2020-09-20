@@ -11,6 +11,7 @@
 			for English: the Penn Treebank tags IN,
 			for German: the Tiger tags APPR APPRART APPO APZR.
 			for Dutch: the CGN tag Prep
+			for Portuguese: the Universal Dependencies tag ADP
 
 			Formula:
 			PrepositionDensity =
@@ -90,6 +91,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 
 		<configurationParameterSettings>
@@ -109,6 +119,12 @@
 				<name>POSTypeNL</name>
 				<value>
 					<string>Prep</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
+				<value>
+					<string>ADP</string>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -133,6 +149,7 @@
 					<language>EN</language>
 					<language>DE</language>
 					<language>NL</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

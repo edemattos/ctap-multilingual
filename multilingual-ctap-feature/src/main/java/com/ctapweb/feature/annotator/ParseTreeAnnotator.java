@@ -89,13 +89,12 @@ public class ParseTreeAnnotator extends JCasAnnotator_ImplBase {
 					new LoadLangModelMessage(languageSpecificResourceKey, parserModelFilePath));
 
 			switch (lCode) {
-			case SupportedLanguages.GERMAN:
-				parser = new StanfordCoreNLPConstituencyParser(parserModelFilePath);  
-				break;
+				case SupportedLanguages.GERMAN:
+				case SupportedLanguages.PORTUGUESE:
+				case SupportedLanguages.ENGLISH:
+					parser = new StanfordCoreNLPConstituencyParser(parserModelFilePath);
+					break;
 				// add new language here
-			case SupportedLanguages.ENGLISH:  // English as default
-				parser = new StanfordCoreNLPConstituencyParser(parserModelFilePath);
-				break;
 			}
 		} catch (ResourceAccessException e) {
 			logger.throwing(e);
@@ -303,8 +302,9 @@ public class ParseTreeAnnotator extends JCasAnnotator_ImplBase {
 //			Tree tree = stanfordParser.parseTree(stanfordTaggedWords);
 			Tree tree = stanfordParser.apply(stanfordTaggedWords);
 			// in case of failure:
-			if (tree == null)
+			if (tree == null) {
 				return getFlatPTBTree(tokens, tags, "(ROOT", ")");
+			}
 			return tree.toString();
 		}
 

@@ -2,6 +2,7 @@ package com.ctapweb.feature.annotator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import com.ctapweb.feature.type.Lemma;
 import com.ctapweb.feature.type.MorphologicalTag;
 import com.ctapweb.feature.type.Sentence;
 import com.ctapweb.feature.type.Token;
+import com.ctapweb.feature.util.SupportedLanguages;
 
 import is2.data.SentenceData09;
 
@@ -73,11 +75,20 @@ public class MorphologicalTagAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			morpholigicalModelFilePath = getContext().getResourceFilePath(languageSpecificResourceKey);
 
-			logger.trace(LogMarker.UIMA_MARKER, 
-					new LoadLangModelMessage(languageSpecificResourceKey, morpholigicalModelFilePath));
+			// Stanza models are currently being hosted by the web service
+			if (morpholigicalModelFilePath != null) {
+				logger.trace(LogMarker.UIMA_MARKER,
+						new LoadLangModelMessage(languageSpecificResourceKey, morpholigicalModelFilePath));
+			}
 
-			morphologicalTagger = new MateMorphologicalTagger(morpholigicalModelFilePath);
-			// add switch statement here to allow for different instantiations; see example in ParseTreeAnnotator.java
+			switch (lCode) {
+				case SupportedLanguages.PORTUGUESE:
+					morphologicalTagger = new StanzaMorphologicalTagger();
+					break;
+				case SupportedLanguages.GERMAN: // German as default
+					morphologicalTagger = new MateMorphologicalTagger(morpholigicalModelFilePath);
+					break;
+			}
 
 		} catch (ResourceAccessException e) {
 			logger.throwing(e);
@@ -105,47 +116,49 @@ public class MorphologicalTagAnnotator extends JCasAnnotator_ImplBase {
 		logger.trace(LogMarker.UIMA_MARKER, 
 				new ProcessingDocumentMessage(aeType, aeName, aJCas.getDocumentText()));
 
+		// Get document text
+		String docText = aJCas.getDocumentText();
+
 		//iterate through all sentences
 		Iterator sentIter = aJCas.getAnnotationIndex(Sentence.type).iterator();
 		while (sentIter.hasNext()) {
 			Sentence sent = (Sentence) sentIter.next();
-			int sentStart = sent.getBegin();
-			int sentEnd = sent.getEnd();
-			List<Token> sentTokens = new ArrayList<>();
-			List<Lemma> sentLemmas = new ArrayList<>();
 
 			//iterate through all tokens
+			List<Token> sentTokens = new ArrayList<>();
 			Iterator tokenIter = aJCas.getAnnotationIndex(Token.type).iterator(false);
 			while(tokenIter.hasNext()) {
 				Token token = (Token) tokenIter.next();
-				if(token.getBegin() >= sentStart && token.getEnd() <= sentEnd) {
+				if(token.getBegin() >= sent.getBegin() && token.getEnd() <= sent.getEnd()) {
 					sentTokens.add(token);
 				}
 			}
 
 			//iterate through all lemmas
+			List<Lemma> sentLemmas = new ArrayList<>();
 			Iterator lemmaIter = aJCas.getAnnotationIndex(Lemma.type).iterator(false);
 			while(lemmaIter.hasNext()) {
 				Lemma lemma = (Lemma) lemmaIter.next();
-				if(lemma.getBegin() >= sentStart && lemma.getEnd() <= sentEnd) {
+				if(lemma.getBegin() >= sent.getBegin() && lemma.getEnd() <= sent.getEnd()) {
 					sentLemmas.add(lemma);
 				}
 			}
 
 			//get morphological tags
-			String[] morphologicalTags = morphologicalTagger.mtag(sentTokens, sentLemmas);
+			String[] morphologicalTags = morphologicalTagger.mtag(sentTokens, sentLemmas, docText);
 
 			//populate the CAS
 			for(int i = 0; i < morphologicalTags.length; i++) {
 				Token token = sentTokens.get(i);
-				MorphologicalTag annotation = new MorphologicalTag(aJCas);
-				annotation.setBegin(token.getBegin()); 
-				annotation.setEnd(token.getEnd());
-				annotation.setMorphologicalTag(morphologicalTags[i]);
-				annotation.addToIndexes();
+				if (token.getBegin() >= sent.getBegin() && token.getEnd() <= sent.getEnd()) {
+					MorphologicalTag annotation = new MorphologicalTag(aJCas);
+					annotation.setBegin(token.getBegin());
+					annotation.setEnd(token.getEnd());
+					annotation.setMorphologicalTag(morphologicalTags[i]);
+					annotation.addToIndexes();
+				}
 			}
 		}
-
 	}
 
 	@Override
@@ -161,7 +174,7 @@ public class MorphologicalTagAnnotator extends JCasAnnotator_ImplBase {
 	 * @author zweiss
 	 */
 	interface CTAPMorphologicalTagger {
-		abstract String[] mtag(List<Token> sentTokens, List<Lemma> sentLemmas);
+		abstract String[] mtag(List<Token> sentTokens, List<Lemma> sentLemmas, String sentence);
 	}
 
 	/**
@@ -179,7 +192,7 @@ public class MorphologicalTagAnnotator extends JCasAnnotator_ImplBase {
 		}
 
 		@Override
-		public String[] mtag(List<Token> sentTokens, List<Lemma> sentLemmas) {
+		public String[] mtag(List<Token> sentTokens, List<Lemma> sentLemmas, String sentence) {
 			String[] tokens = new String[sentTokens.size()];
 			String[] lemmas = new String[sentLemmas.size()];
 			for (int i = 0; i < sentTokens.size(); i++) {
@@ -202,6 +215,39 @@ public class MorphologicalTagAnnotator extends JCasAnnotator_ImplBase {
 		public String[] mtag(SentenceData09 inputSentenceData) {
 			SentenceData09 mtaggedSentence = mateMorphologicalTagger.apply(inputSentenceData);
 			return mtaggedSentence.pfeats;
+		}
+	}
+
+	/**
+	 * Wrapper for Stanza by Stanford NLP (https://stanfordnlp.github.io/stanza/)
+	 * For each text, an HTTP request is made to a containerized Python web service
+	 * API: https://github.com/lingmod-tue/stanza-api
+	 * Java implementation: https://github.com/lingmod-tue/stanza-java
+	 *
+	 * @author edemattos, rziai
+	 */
+	private class StanzaMorphologicalTagger implements CTAPMorphologicalTagger {
+
+		@Override
+		public String[] mtag(List<Token> sentTokens, List<Lemma> sentLemmas, String doc) {
+
+			List<String> tags = new ArrayList<>();
+			String[] morph = doc.split("\n\n")[5].trim().split("\t");
+
+			for (Token t : sentTokens) {
+				boolean hasMorph = false;
+				for (String s : morph) {
+					String[] split = s.split("//");
+					if ((Integer.parseInt(split[0]) == t.getBegin()) && (Integer.parseInt(split[1]) == t.getEnd())) {
+						hasMorph = true;
+						tags.add(split[2]);
+					}
+				}
+				if (!hasMorph) {
+					tags.add(null);
+				}
+			}
+			return Arrays.copyOf(tags.toArray(), tags.size(), String[].class);
 		}
 	}
 }

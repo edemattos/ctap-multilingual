@@ -6,8 +6,8 @@
     <delegateAnalysisEngine key="SentenceAnnotator">
       <import location="../annotator/SentenceAnnotator.xml"/>
       </delegateAnalysisEngine>
-  <delegateAnalysisEngine key="TokenAnnotator">
-      <import location="../annotator/TokenAnnotator.xml"/>
+  <delegateAnalysisEngine key="SurfaceFormAnnotator">
+      <import location="../annotator/SurfaceFormAnnotator.xml"/>
       
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SyllableAnnotator">
@@ -46,7 +46,7 @@
     <flowConstraints>
       <fixedFlow>
         <node>SentenceAnnotator</node>
-      <node>TokenAnnotator</node>
+        <node>SurfaceFormAnnotator</node>
         <node>SyllableAnnotator</node>
         <node>NSyllableFeature</node>
       </fixedFlow>

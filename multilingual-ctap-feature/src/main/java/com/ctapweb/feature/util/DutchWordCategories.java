@@ -52,5 +52,4 @@ public class DutchWordCategories extends WordCategories {
 	public boolean isPreposition(String tag) {
 		return tag.startsWith("Prep");
 	}
-
 }

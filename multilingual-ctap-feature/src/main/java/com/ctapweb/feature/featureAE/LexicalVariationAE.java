@@ -30,6 +30,7 @@ import com.ctapweb.feature.type.LexicalVariation;
 import com.ctapweb.feature.type.POS;
 import com.ctapweb.feature.util.EnglishWordCategories;
 import com.ctapweb.feature.util.GermanWordCategories;
+import com.ctapweb.feature.util.PortugueseWordCategories;
 import com.ctapweb.feature.util.WordCategories;
 
 
@@ -71,6 +72,9 @@ public class LexicalVariationAE extends JCasAnnotator_ImplBase {
 			switch (lCode) {
 			case "DE":
 				posMapping = new GermanWordCategories();
+				break;
+			case "PT":
+				posMapping = new PortugueseWordCategories();
 				break;
 			case "EN":
 			default:  // See if this is a reasonable default

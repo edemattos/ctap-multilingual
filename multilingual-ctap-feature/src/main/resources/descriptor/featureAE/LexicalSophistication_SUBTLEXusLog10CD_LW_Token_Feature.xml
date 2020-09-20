@@ -82,6 +82,7 @@ AAE dependency:
         </outputs>
                 <languagesSupported>
                     <language>EN</language>
+                    <language>PT</language>
                     <!-- add new language here -->
                 </languagesSupported>
       </capability>
@@ -99,14 +100,28 @@ AAE dependency:
       <interfaceName>com.ctapweb.feature.util.LookUpTableResource</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
+      <externalResourceDependency>
+      <key>lookUpTablePT</key>
+      <description>a look up table is the frequency list (or other word-value mapping lists) with which word sophistication values are obtained.</description>
+      <interfaceName>com.ctapweb.feature.util.LookUpTableResource</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
         <name>SUBTLEXus_Log10CD</name>
-        <description>per million word frequency from SUBTLEXus.</description>
+        <description>log10CD from SUBTLEXus.</description>
         <fileResourceSpecifier>
           <fileUrl>file:table/SUBTLEXus_Log10CD.csv</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>com.ctapweb.feature.util.LookUpTableResource_Impl</implementationName>
+      </externalResource>
+        <externalResource>
+        <name>SUBTLEXpt_Log10CD</name>
+        <description>log10CD from SUBTLEXpt.</description>
+        <fileResourceSpecifier>
+          <fileUrl>file:table/pt/PT_SUBTLEX_LOG10CD.csv</fileUrl>
         </fileResourceSpecifier>
         <implementationName>com.ctapweb.feature.util.LookUpTableResource_Impl</implementationName>
       </externalResource>
@@ -115,6 +130,10 @@ AAE dependency:
       <externalResourceBinding>
         <key>lookUpTableEN</key>
         <resourceName>SUBTLEXus_Log10CD</resourceName>
+      </externalResourceBinding>
+        <externalResourceBinding>
+        <key>lookUpTablePT</key>
+        <resourceName>SUBTLEXpt_Log10CD</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

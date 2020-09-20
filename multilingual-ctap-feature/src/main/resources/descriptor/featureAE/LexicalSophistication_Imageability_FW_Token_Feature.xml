@@ -12,7 +12,9 @@ A norm list is a list where a norm value that describes a certain aspect of a wo
 
 Token features take into consideration all word tokens, while type features calculate only unique tokens.
 
-This feature calculates lexical sophistication with the Imageability norm list from the MRC Psycholinguistic Database (http://websites.psychology.uwa.edu.au/school/MRCDatabase/mrc2.html). 
+For English, this feature calculates lexical sophistication with the Imageability norm list from the MRC Psycholinguistic Database (http://websites.psychology.uwa.edu.au/school/MRCDatabase/mrc2.html).
+
+        For Portuguese, it uses norms from the Minho Word Pool by Soares et al. 2016 (https://link.springer.com/article/10.3758/s13428-016-0767-4?shared-article-renderer)
 
 AAE dependency:
 	SentenceAnnotator.xml
@@ -82,6 +84,7 @@ AAE dependency:
         </outputs>
                 <languagesSupported>
                     <language>EN</language>
+                    <language>PT</language>
                     <!-- add new language here -->
                 </languagesSupported>
       </capability>
@@ -99,6 +102,12 @@ AAE dependency:
       <interfaceName>com.ctapweb.feature.util.LookUpTableResource</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
+      <externalResourceDependency>
+      <key>lookUpTablePT</key>
+      <description>a look up table is the frequency list (or other word-value mapping lists) with which word sophistication values are obtained.</description>
+      <interfaceName>com.ctapweb.feature.util.LookUpTableResource</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
@@ -110,11 +119,23 @@ AAE dependency:
         </fileResourceSpecifier>
         <implementationName>com.ctapweb.feature.util.LookUpTableResource_Impl</implementationName>
       </externalResource>
+        <externalResource>
+        <name>ImageabilityPT</name>
+        <description>Imageability from the Minho Word Pool.</description>
+        <fileResourceSpecifier>
+          <fileUrl>file:table/pt/PT_imageability_Soares_2016.csv</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>com.ctapweb.feature.util.LookUpTableResource_Impl</implementationName>
+      </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
         <key>lookUpTableEN</key>
         <resourceName>Imageability</resourceName>
+      </externalResourceBinding>
+        <externalResourceBinding>
+        <key>lookUpTablePT</key>
+        <resourceName>ImageabilityPT</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

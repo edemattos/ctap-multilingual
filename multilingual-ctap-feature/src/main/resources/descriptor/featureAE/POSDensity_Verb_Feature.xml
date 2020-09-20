@@ -17,6 +17,7 @@
 			German: the Tiger tags VVFIN VVIMP VVINF VVIZU VMFIN VMIMP VMINF
 			VMIZU
 			VMPP VAFIN VAIMP VAINF VAIZU VAPP
+			for Portuguese: the Universal Dependencies tag AUX VERB
 
 			Formula:
 			verbDensity = numVerbs
@@ -84,6 +85,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
@@ -94,6 +104,12 @@
 			</nameValuePair>
 			<nameValuePair>
 				<name>POSTypeDE</name>
+				<value>
+					<string>verb</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
 				<value>
 					<string>verb</string>
 				</value>
@@ -119,6 +135,7 @@
 				<languagesSupported>
 					<language>EN</language>
 					<language>DE</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

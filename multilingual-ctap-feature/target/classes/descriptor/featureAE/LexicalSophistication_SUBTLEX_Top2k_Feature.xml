@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+    <primitive>true</primitive>
+    <annotatorImplementationName>
+        com.ctapweb.feature.featureAE.LexicalSophistication_Bands_AE
+    </annotatorImplementationName>
+    <analysisEngineMetaData>
+        <name>Lexical Sophistication Feature: SUBTLEX Frequency Top 2000</name>
+        <description>
+            Calculates the percent of words in top 2,000 of the SUBTLEX norm list.
+
+            AAE dependency:
+            SentenceAnnotator.xml
+            SurfaceFormAnnotator.xml
+            NSurfaceFormFeature.xml
+        </description>
+        <version>1.0</version>
+        <vendor>Eric DeMattos</vendor>
+        <configurationParameters>
+            <configurationParameter>
+                <name>aeID</name>
+                <type>Integer</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>LanguageCode</name>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>range</name>
+                <description>Number between 1 (top 1,000) and 6 (frequency below top 5,000)</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+        </configurationParameters>
+        <configurationParameterSettings>
+            <nameValuePair>
+                <name>range</name>
+                <value>
+                    <string>2</string>
+                </value>
+            </nameValuePair>
+        </configurationParameterSettings>
+        <typeSystemDescription>
+            <imports>
+                <import location="../type_system/feature_type/LexicalSophistication_Bands_Type.xml"/>
+            </imports>
+        </typeSystemDescription>
+        <typePriorities/>
+        <fsIndexCollection/>
+        <capabilities>
+            <capability>
+                <outputs>
+                    <type allAnnotatorFeatures="true">com.ctapweb.feature.type.LexicalSophistication_Bands
+                    </type>
+                </outputs>
+                <languagesSupported>
+                    <language>PT</language>
+                    <!-- add new language here -->
+                </languagesSupported>
+            </capability>
+        </capabilities>
+        <operationalProperties>
+            <modifiesCas>true</modifiesCas>
+            <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+            <outputsNewCASes>false</outputsNewCASes>
+        </operationalProperties>
+    </analysisEngineMetaData>
+    <externalResourceDependencies>
+        <externalResourceDependency>
+            <key>lookUpListPT</key>
+            <description>List of words in specified frequency range.</description>
+            <interfaceName>com.ctapweb.feature.util.LookUpListResource
+            </interfaceName>
+            <optional>false</optional>
+        </externalResourceDependency>
+    </externalResourceDependencies>
+    <resourceManagerConfiguration>
+        <externalResources>
+            <externalResource>
+                <name>pt_range2k</name>
+                <description>Top 2,000 words.</description>
+                <fileResourceSpecifier>
+                    <fileUrl>file:lists/pt/PT_SUBTLEX_FREQtop2k.csv</fileUrl>
+                </fileResourceSpecifier>
+                <implementationName>com.ctapweb.feature.util.LookUpListResource_Impl
+                </implementationName>
+            </externalResource>
+        </externalResources>
+        <externalResourceBindings>
+            <externalResourceBinding>
+                <key>lookUpListPT</key>
+                <resourceName>pt_range2k</resourceName>
+            </externalResourceBinding>
+        </externalResourceBindings>
+    </resourceManagerConfiguration>
+</analysisEngineDescription>

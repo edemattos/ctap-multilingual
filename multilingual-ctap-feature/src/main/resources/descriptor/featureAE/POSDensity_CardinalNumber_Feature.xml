@@ -13,6 +13,8 @@
 			for English: the Penn Treebank tags CD,
 			for German: the
 			Tiger tag CARD
+			for Portuguese: the Universal Dependencies tag NUM
+
 			Formula:
 			CDDensity = numCDs / numTokens
 
@@ -79,6 +81,15 @@
 				<multiValued>false</multiValued>
 				<mandatory>true</mandatory>
 			</configurationParameter>
+			<configurationParameter>
+				<name>POSTypePT</name>
+				<description>options:
+
+				</description>
+				<type>String</type>
+				<multiValued>false</multiValued>
+				<mandatory>true</mandatory>
+			</configurationParameter>
 		</configurationParameters>
 		<configurationParameterSettings>
 			<nameValuePair>
@@ -91,6 +102,12 @@
 				<name>POSTypeDE</name>
 				<value>
 					<string>CARD</string>
+				</value>
+			</nameValuePair>
+			<nameValuePair>
+				<name>POSTypePT</name>
+				<value>
+					<string>NUM</string>
 				</value>
 			</nameValuePair>
 		</configurationParameterSettings>
@@ -114,6 +131,7 @@
 				<languagesSupported>
 					<language>EN</language>
 					<language>DE</language>
+					<language>PT</language>
 					<!-- add new language here -->
 				</languagesSupported>
 			</capability>

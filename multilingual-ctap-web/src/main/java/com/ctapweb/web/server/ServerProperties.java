@@ -11,10 +11,10 @@ public class ServerProperties  {
 //		public static final String INITDBPASSWD = "msk0fc2";
 //		public static final String ADMINEMAIL = "admin@snook.com";
 
-	public static final String DBNAME = "ctap_test";
-	public static final String DBUSER = "ctap_test";
-	public static final String DBPASSWD = "ctap_test";
-	public static final String INITDBPASSWD = "ctap_test";
+	public static final String DBNAME = "ctap_pt";
+	public static final String DBUSER = "ctap_pt";
+	public static final String DBPASSWD = "ctap_pt";
+	public static final String INITDBPASSWD = "ctap_pt";
 	public static final String ADMINEMAIL = "admin@example.com";
 
 

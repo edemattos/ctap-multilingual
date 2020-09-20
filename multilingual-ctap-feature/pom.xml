@@ -9,12 +9,56 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<name>Text Feature Extraction Module for CTAP</name>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jersey.version>2.29.1</jersey.version>
+		<dkpro.core.version>2.1.0</dkpro.core.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>${jersey.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.dkpro.core</groupId>
+				<artifactId>dkpro-core-asl</artifactId>
+				<version>${dkpro.core.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+		<repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+        </repository>
+		<repository>
+			<!-- for stanza-java -->
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-core</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<dependency>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>uimafit-core</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.opennlp</groupId>
 			<artifactId>opennlp-tools</artifactId>
@@ -63,6 +107,29 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 			<version>3.61</version> <!-- manually downloaded latest version -->
             <scope>system</scope>
             <systemPath>${basedir}/lib/anna-3.61.jar</systemPath>
+		</dependency>
+		<dependency>
+			<!-- jitpack dependency -->
+			<groupId>com.github.lingmod-tue</groupId>
+			<artifactId>stanza-java</artifactId> <!-- repo name -->
+			<version>ed75f9e</version> <!-- git commit hash, latest as of 10 July 2020 -->
+		</dependency>
+		<dependency>
+			<!-- Required for stanza-java -->
+  			<groupId>org.dkpro.core</groupId>
+  			<artifactId>dkpro-core-api-segmentation-asl</artifactId>
+		</dependency>
+		<dependency>
+			<!-- Required for stanza-java -->
+			<groupId>org.eclipse</groupId>
+			<artifactId>yasson</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<!-- Required for stanza-java -->
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.1.2</version>
 		</dependency>
 	</dependencies>
 

@@ -2,6 +2,7 @@ package com.ctapweb.feature.annotator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import com.ctapweb.feature.logging.message.ProcessingDocumentMessage;
 import com.ctapweb.feature.type.Lemma;
 import com.ctapweb.feature.type.Sentence;
 import com.ctapweb.feature.type.Token;
+import com.ctapweb.feature.util.SupportedLanguages;
 
 import is2.data.SentenceData09;
 import is2.lemmatizer.Lemmatizer;
@@ -73,11 +75,20 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			lemmaModelFilePath = getContext().getResourceFilePath(languageSpecificResourceKey);
 
-			logger.trace(LogMarker.UIMA_MARKER, 
-					new LoadLangModelMessage(languageSpecificResourceKey, lemmaModelFilePath));
+			// Stanza models are currently being hosted by the web service
+			if (lemmaModelFilePath != null) {
+				logger.trace(LogMarker.UIMA_MARKER,
+						new LoadLangModelMessage(languageSpecificResourceKey, lemmaModelFilePath));
+			}
 
-			lemmatizer = new MateLemmatizer(lemmaModelFilePath);
-			// add switch statement here to allow for different instantiations; see example in ParseTreeAnnotator.java
+			switch (lCode) {
+				case SupportedLanguages.PORTUGUESE:
+					lemmatizer = new StanzaLemmatizer();
+					break;
+				case SupportedLanguages.GERMAN: // German as default
+					lemmatizer = new MateLemmatizer(lemmaModelFilePath);
+					break;
+			}
 
 		} catch (ResourceAccessException e) {
 			logger.throwing(e);
@@ -105,38 +116,40 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
 		logger.trace(LogMarker.UIMA_MARKER, 
 				new ProcessingDocumentMessage(aeType, aeName, aJCas.getDocumentText()));
 
+		// Get document text
+		String docText = aJCas.getDocumentText();
+
 		//iterate through all sentences
 		Iterator sentIter = aJCas.getAnnotationIndex(Sentence.type).iterator();
 		while (sentIter.hasNext()) {
 			Sentence sent = (Sentence) sentIter.next();
-			int sentStart = sent.getBegin();
-			int sentEnd = sent.getEnd();
-			List<Token> sentTokens = new ArrayList<>();
-			
+
 			//iterate through all tokens
+			List<Token> sentTokens = new ArrayList<>();
 			Iterator tokenIter = aJCas.getAnnotationIndex(Token.type).iterator(false);
 			while(tokenIter.hasNext()) {
 				Token token = (Token) tokenIter.next();
-				if(token.getBegin() >= sentStart && token.getEnd() <= sentEnd) {
+				if(token.getBegin() >= sent.getBegin() && token.getEnd() <= sent.getEnd()) {
 					sentTokens.add(token);
 				}
 			}
 
 			//get lemmas
-			String[] lemmas = lemmatizer.lemmatize(sentTokens);
+			String[] lemmas = lemmatizer.lemmatize(sentTokens, docText);
 
 			//populate the CAS
-			for(int i = 0; i < lemmas.length; i++) {  
+			for(int i = 0; i < sentTokens.size(); i++) {
 				Token token = sentTokens.get(i);
-				Lemma annotation = new Lemma(aJCas);
-//				logger.trace(LogMarker.UIMA_MARKER, "Adding Lemma: "+token.getCoveredText()+" "+lemmas[i]);  // debugging
-				annotation.setBegin(token.getBegin()); 
-				annotation.setEnd(token.getEnd());
-				annotation.setLemma(lemmas[i]);
-				annotation.addToIndexes();
+				if (token.getBegin() >= sent.getBegin() && token.getEnd() <= sent.getEnd()) {
+					Lemma annotation = new Lemma(aJCas);
+					//logger.trace(LogMarker.UIMA_MARKER, "Adding Lemma: "+token.getCoveredText()+" "+lemmas[i]);  // debugging
+					annotation.setBegin(token.getBegin());
+					annotation.setEnd(token.getEnd());
+					annotation.setLemma(lemmas[i]);
+					annotation.addToIndexes();
+				}
 			}
 		}
-
 	}
 
 	@Override
@@ -152,7 +165,7 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
 	 * @author zweiss
 	 */
 	interface CTAPLemmatizer {
-		abstract String[] lemmatize(List<Token> tokenizedSentence);
+		abstract String[] lemmatize(List<Token> tokenizedSentence, String sentence);
 	}
 
 	/**
@@ -171,7 +184,7 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
 		}
 		
 		@Override
-		public String[] lemmatize(List<Token> sentTokens) {
+		public String[] lemmatize(List<Token> sentTokens, String sentence) {
 			String[] tokens = new String[sentTokens.size()+1];
 			tokens[0] = "<root>";  // Mate tools expect root token
 			for (int i = 0; i < sentTokens.size(); i++) {
@@ -192,6 +205,37 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
 		public String[] lemmatize(SentenceData09 inputSentenceData) {
 			SentenceData09 lemmatizedSentence = mateLemmatizer.apply(inputSentenceData);
 			return lemmatizedSentence.plemmas;
+		}
+	}
+
+	/**
+	 * Wrapper for Stanza by Stanford NLP (https://stanfordnlp.github.io/stanza/)
+	 * For each text, an HTTP request is made to a containerized Python web service
+	 * API: https://github.com/lingmod-tue/stanza-api
+	 * Java implementation: https://github.com/lingmod-tue/stanza-java
+	 *
+	 * @author edemattos, rziai
+	 */
+	private class StanzaLemmatizer implements CTAPLemmatizer {
+
+		@Override
+		public String[] lemmatize(List<Token> sentTokens, String doc) {
+
+			List<String> l = new ArrayList<>();
+			String[] spans = doc.split("\n\n")[2].trim().split("\t");
+			String[] lemmas = doc.split("\n\n")[4].trim().split("\t");
+
+			int startIndex = 0;
+			for (Token t : sentTokens) {
+				for (int i = startIndex; i < spans.length; i++){
+					if ((Integer.parseInt(spans[i].split("-")[0]) == t.getBegin()) &&
+							(Integer.parseInt(spans[i].split("-")[1]) == t.getEnd())) {
+						l.add(lemmas[i]);
+						startIndex = i;
+					}
+				}
+			}
+			return Arrays.copyOf(l.toArray(), l.size(), String[].class);
 		}
 	}
 }
